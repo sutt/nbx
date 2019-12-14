@@ -1,0 +1,123 @@
+CellPullRequest:
+
+	
+Overview / Main Points
+------------------------
+
+	
+	- need a way to merge only certain cells, otherwise all the progress is overwritten
+	
+		- unless, we can create a merge strategy which does UNION on exisiting work and new additions
+		
+	- idea: create a "cool" guid in the cell where you want to receive the teachers-pr. This can be function in CPR-module. Once you have that unique string, in the notebook, merge can navigate and find it. e.g.:
+	
+		---------------
+		In[ ] cpr.public_code(2)
+		---------------
+		Out[ ] awesome-aardvark-2345
+		----------------
+		In [ ] 
+		----------------
+		
+			-> now we'll try to merge just below awesome-aardvark-2345 on the students notebook
+			
+	- Stages of Dev:
+		1.) teacher able to push out code to students
+		2.) students are able to deliver teacher their code
+		
+		- nice to haves:
+			- most projects will involve a datasets so that will need to be included in the 
+			- each student can have one main repo where teacher can sync with students progress
+		
+Todo:
+-------------------------
+
+	12.14
+	
+	[ ] setup the master git repo for the project
+	
+	[ ] setup the local git-server
+	
+	[ ] setup a testing framework 
+	
+	[ ] setup the module for cpr class
+	
+	[ ] create some examples of merge conflicts
+	
+	[ ] how to do git merge without git-pull?
+	
+	
+	12.12
+	
+	[x] set up a dummy remote repo
+	[x] open up two terminals, two notebooks, two local repos
+	
+	[x] understand the delay in RELOAD for notebook
+		-> refreshing the page seems to work
+	
+	[ ] how well do changes to meta-data within a cell work to merge?
+		[x] demonstrate some meta-data changing -> need to save from notebook
+	
+	[x] build a script for add, commit push
+	[ ] build a script to add, commit, pull
+	
+	[ ] try a git checkout -- book1.ipynb while live
+	
+	[ ] setup an offline working copy
+		>git clone --local ../remote/example-repo
+		>cd example-repo
+		>git status
+		>git remote get-url origin
+			/mnt/c/Users/wsutt/Desktop/cpr/misc/../remote/example-repo/
+	
+	[x] surface some client issues by changing students notebook before the pull
+	
+	[x] can i run an .sh file in windows terminal?
+		->yes, but it shells out and closes too quickly to read
+		[x] perhaps it can work for git? -> yes
+		
+	[ ] do i have any extensions installed in base?
+		
+
+
+Detailed Notes:
+-----------------------------
+		
+		+ even without any actual changes to students, `git diff --stat` returns this...
+			"""
+			 warning: LF will be replaced by CRLF in book1.ipynb.
+			 The file will have its original line endings in your working directory
+			"""
+			
+			- but trying to commit that fails:			
+				"""
+				nothing to commit, working tree clean
+				"""
+		
+		+ merging fails when student+teacher both make changes, and student's chnages are not committed.
+		
+				error: Your local changes to the following files would be overwritten by merge:
+					book1.ipynb
+				Please commit your changes or stash them before you merge.
+				Aborting
+				Updating 05085cf..e81cbeb
+		
+			also:
+			
+				Your branch is behind 'origin/master' by 1 commit, and can be fast-forwarded.
+				
+				? what is "fast-forwarding" ?
+				
+		+ Looks like student's branch get's stuck behind teacher's once he starts merging.
+		
+			"""
+			Your branch is ahead of 'origin/master' by 3 commits.		
+			"""
+	
+	
+	
+	
+	
+	
+	
+	
