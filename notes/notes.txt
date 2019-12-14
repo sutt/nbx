@@ -28,24 +28,59 @@ Overview / Main Points
 		- nice to haves:
 			- most projects will involve a datasets so that will need to be included in the 
 			- each student can have one main repo where teacher can sync with students progress
+			
+		- other things to consider:
+			- need to .gitignore large datasets, and ipynb_checkpoints, otherwise it will be a nightmare merge
+			- just add/commit the notebook in progress
 		
 Todo:
 -------------------------
 
 	12.14
 	
-	[ ] setup the master git repo for the project
+	[x] setup the master git repo for the project
 	
-	[ ] setup the local git-server
+	[x] setup the local git-server 
+		->resides cpr/remote/main  
+		->called remote local in student-cpr and teacher-cpr
+		detailed:
+			in remote/: >mkdir main
+						>cd main
+						>git init
+						>git checkout -b dummy
+			
+			in student-cpr/ and teacher-cpr:
+						>git remote add local /c/Users/wsutt/Desktop/cpr/remote/main
+						
+			from teacher-cpr/
+						>git push local master
+						(now, remote should be sync'd with teacher)
+						
+			to verify sync, in remote/main/:
+						>git checkout master
+						>ls  (should see all files)
+						>git checkout dummy (need to switch back to enable pushing to master)
+						
+			now sync up student, in student-cpr:
+						>git add .
+						>git commit -m "add/committing everything tp allow pull"
+						>git pull local master
+						
 	
 	[ ] setup a testing framework 
 	
 	[ ] setup the module for cpr class
 	
+	[ ] setup a skeleton for subprocess to git
+	
+	[ ] investigate libraries for python-git
+	
 	[ ] create some examples of merge conflicts
 	
 	[ ] how to do git merge without git-pull?
 	
+	other questions:
+		
 	
 	12.12
 	
@@ -82,6 +117,52 @@ Todo:
 
 Detailed Notes:
 -----------------------------
+		
+		12.14
+		
+		+ examples of git operations while notebook is live.
+		
+			"""
+			error: Your local changes to the following files would be overwritten by merge:
+				book1.ipynb
+				Please commit your changes or stash them before you merge.
+				Aborting
+			"""
+		
+		+ how to clone from local? doesn't work as easily as adding a local remote
+		
+			-> you can just push to a newly init'd folder
+		
+		+ how do 
+		
+		+ how to push to a local repo:
+			
+			This one works:
+			example-repo-branch
+			in this one, we do:
+				(in remote)>git checkout -b dummy
+				(in local) >git push local-branch master
+				-> now pushed changes are visible in remote once we:
+				(in remote) >git checkout master
+				but changes aren't visible in dummy branch
+				
+			
+			This didn't really work:
+			example-repo (turned to "bare" but files disappear, but log works)
+			
+			remote: error: refusing to update checked out branch: refs/heads/master
+			remote: error: By default, updating the current branch in a non-bare repository
+			remote: is denied, because it will make the index and work tree inconsistent
+			remote: with what you pushed, and will require 'git reset --hard' to match
+			remote: the work tree to HEAD.
+			
+			troubleshooting:	https://stackoverflow.com/questions/2816369/git-push-error-remote-rejected-master-master-branch-is-currently-checked
+		
+				in remote do: git config --bool core.bare true
+				
+			example-repo-branch
+		
+		12.12
 		
 		+ even without any actual changes to students, `git diff --stat` returns this...
 			"""
