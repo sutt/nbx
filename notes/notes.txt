@@ -40,11 +40,33 @@ Todo:
 	
 	[x] put stuff in place for a commit
 	
+	[x] intellisense for vscode settings
+	
 	[ ] build an MVP
 	
 	[ ] build some simple tests like merging conflict example1
 	
-	Look at the paste cell method to find out how to insert cells on the fly.
+	 - Look at the paste cell method to find out how to insert cells on the fly.
+	 
+	 - Read through this: https://jupyter-notebook.readthedocs.io/en/latest/extending/index.html
+	 
+	 - Good reading on Ipython.display.Javascript <-> python
+	 	https://stackoverflow.com/questions/16852885/ipython-adding-javascript-scripts-to-ipython-notebook/31750982
+		
+			- look at the lib argument in Javascript
+		http://jakevdp.github.io/blog/2013/06/01/ipython-notebook-javascript-python-communication/
+			
+			- from 2013, method deprecated
+		
+	 Other good reading:
+		-  https://forums.fast.ai/t/jupyter-notebook-enhancements-tips-and-tricks/17064/2
+		
+		- https://www.dataquest.io/blog/advanced-jupyter-notebooks-tutorial/
+		
+		- something about custom.js is where you can write your own js
+		
+			- it's likely we need to do an extension proper
+	
 	
 	Thoughts:
 	
