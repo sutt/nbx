@@ -36,6 +36,37 @@ Overview / Main Points
 Todo:
 -------------------------
 
+	12.15
+	
+	[x] put stuff in place for a commit
+	
+	[ ] build an MVP
+	
+	[ ] build some simple tests like merging conflict example1
+	
+	Look at the paste cell method to find out how to insert cells on the fly.
+	
+	Thoughts:
+	
+		One way to get a nice client-side reload after git-pull, is by doing stuff after load_notebook, like reversing the scroll_to_top()
+		
+		"notebook"/notebook/static/js/scrollmanager.js - has scroll functions
+		
+		But another way is to write our own extension which mimics the way load_notebook occurs, but changes the bad functionality.
+
+			
+		How to find the selected cell	from:https://github.com/jupyter/notebook/blob/b8b66332e2023e83d2ee04f83d8814f567e01a4e/docs/source/frontend_config.rst
+		
+			var cell = Jupyter.notebook.get_selected_cell();
+			var config = cell.config;
+			var patch = {
+				  CodeCell:{
+					cm_config:{indentUnit:2}
+				  }
+				}
+			config.update(patch)
+	
+	
 	12.14
 	
 	[x] setup the master git repo for the project
@@ -81,8 +112,11 @@ Todo:
 	
 	[ ] how to do git merge without git-pull?
 	
-	[ ] try executing window.location.realod() from python
-		- need to import Ipython.display.Javascript
+		- for testing processes: we'd operate on files instead repo's; can we go something like that?
+	
+	[x] try executing window.location.realod() from python
+		from IPython.display import Javascript
+		Javascript("window.location.reload()")
 		
 		
 	
@@ -101,9 +135,7 @@ Todo:
 				
 			-> I can't dummy duplicate an extension yet
 		
-		[ ] Get some extensions from here and figure out how they work!
-				
-				https://github.com/ipython-contrib/jupyter_contrib_nbextensions
+			https://github.com/ipython-contrib/jupyter_contrib_nbextensions
 				
 		
 		
