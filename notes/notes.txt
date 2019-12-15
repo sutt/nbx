@@ -69,6 +69,8 @@ Todo:
 	
 	[ ] setup a testing framework 
 	
+		[ ] how will we drive changes? maybe just writing the "resultant" json from python instead of using a webdriver on browser to automate jupyter?
+	
 	[ ] setup the module for cpr class
 	
 	[ ] setup a skeleton for subprocess to git
@@ -79,7 +81,148 @@ Todo:
 	
 	[ ] how to do git merge without git-pull?
 	
+	[ ] try executing window.location.realod() from python
+		- need to import Ipython.display.Javascript
+		
+		
+	
+	[ ] copy the pattern in an example nb_ensensions
+	
+		- or freeload of exisitng installed extensions like nb_conda
+		
+		- or from user-built extensions
+		
+		notes:
+			extensions live both in:
+				- lib/site-packages
+					(with an __init__.py directing jupyter)
+				
+				- Anaconda3/share/nbextensions/ 
+				
+			-> I can't dummy duplicate an extension yet
+		
+		[ ] Get some extensions from here and figure out how they work!
+				
+				https://github.com/ipython-contrib/jupyter_contrib_nbextensions
+				
+		
+		
+	[x] verify the reload command process
+	
+		the pop-up
+		<div class="modal-footer"><button class="btn btn-default btn-sm btn-warning" data-dismiss="modal">Reload</button><button class="btn btn-default btn-sm" data-dismiss="modal">Cancel</button><button class="btn btn-default btn-sm btn-danger save-confirm-btn" data-dismiss="modal">Overwrite</button></div>
+		
+		Error message when merge fails:
+		Unreadable Notebook: C:\Users\wsutt\Desktop\cpr\student\student-cpr\book1.ipynb NotJSONError('Notebook does not appear to be JSON: \'{\\n "cells": [\\n {\\n "cell_type": "m...')
+		
+			[x] compare diffs b/w teacher's book1.ipynb and students' book1.ipynb
+				after failed merge
+				
+				in misc/saved-files as book1-conflicts.ipynb, book1-=good.ipynb
+				>git diff --no-index book1-good.ipynb book1-conflicts.ipynb
+				
+				-> looks like "<<<<<<<<HEAD" is throwing off json
+				-> also there was a duplicate 'source' item from teacher writing into cell and student having it blank.
+				
+	
+		[x] find the javascript sources for jupyter
+		-> window.location.realod() works to view the newly inserted code, but is clunky and doesn't keep the cursor in position.
+		
+		main.min.js in a downloaded page at line 45233:
+		
+			if (that._changed_on_disk_dialog !== null) {
+                            // update save callback on the confirmation button
+                            that._changed_on_disk_dialog.find('.save-confirm-btn').click(_save);
+                            //Rebind Click Event on Reload
+                            that._changed_on_disk_dialog.find('.btn-warning').click(function () {window.location.reload()});
+                            // redisplay existing dialog
+                            that._changed_on_disk_dialog.modal('show');
+                        } else {
+                          // create new dialog
+                          that._changed_on_disk_dialog = dialog.modal({
+                            notebook: that,
+                            keyboard_manager: that.keyboard_manager,
+                            title: i18n.msg._("Notebook changed"),
+                            body: i18n.msg._("The notebook file has changed on disk since the last time we opened or saved it. "
+                                  + "Do you want to overwrite the file on disk with the version open here, or load "
+                                  + "the version on disk (reload the page)?"),
+                            buttons: {
+                                Reload: {
+                                    class: 'btn-warning',
+                                    click: function() {
+                                        window.location.reload();
+                                    }
+                                },
+							Cancel: {},
+                                Overwrite: {
+                                    class: 'btn-danger save-confirm-btn',
+                                    click: function () {
+                                        _save();
+                                    }
+                                },
+                            }
+							
+			[x] better option for window reloading?
+			
+				-> at the moment no: none of these are callable from console
+					the reason is that naturally these methods get called from some object deep in the call stack, which allows `this` within the method to be a `Notebook` object
+			
+				main.min.js line 45641 sets cursor location
+				
+					if (this.ncells() === 0) {
+						this.insert_cell_below('code');
+						this.edit_mode(0);
+					} else {
+						this.select(0);
+						this.handle_command_mode(this.get_cell(0));
+					}
+					
+				part of:
+					Notebook.prototype.load_notebook  Notebook.prototype.load_notebook_success
+
+					
+				[x] execute those from console
+				
+					>IPython.Notebook.prototype.load_notebook()
+					
+						caught in debugger: static/notebook/js/notebook/js/notebook.js
+						
+						Notebook.prototype.load_notebook = function (notebook_path) {
+							this.notebook_path = notebook_path;
+						
+						where:
+						notebook_path = 'student/student-cpr/book1-fix.ipynb'
+					
+					>IPython.Notebook.prototype.load_notebook('student/student-cpr/book1-fix.ipynb')
+					>requirejs("notebook/js/notebook").Notebook.prototype.load_notebook("student/student-cpr/book1-fix.ipynb")
+					
+					 $.ajax({
+						  url: "/static/notebook/js/main.min.js",
+						  dataType: "script",
+						  success: true
+						});
+					$.ajax({
+					  url: "/static/notebook/js/main.min.js?v=1bc4ae6ca8730320ff059b16de698691",
+					  dataType: "script",
+					  success: true
+					});
+					<script src="/static/notebook/js/main.min.js?v=1bc4ae6ca8730320ff059b16de698691" type="text/javascript" charset="utf-8"></script>
+
+	
 	other questions:
+		- how to do an immediate refresh to see new code
+			-> can just refresh page, but...
+			-> is there an IPython method for this "Reload" action?
+			-> what if sutdent adds more work before merge completes
+			-> how to return cursor to appropriate cell?
+			
+			https://stackoverflow.com/questions/32237275/save-an-ipython-notebook-programmatically-from-within-itself
+			
+				looks like using the following pseudo code should work:
+				>from Ipython.display import Javascript
+				>Javascript(Ipython.notebook.reload() [sic])
+				
+		- does this work across OS's with meta-data?
 		
 	
 	12.12
@@ -111,7 +254,8 @@ Todo:
 		->yes, but it shells out and closes too quickly to read
 		[x] perhaps it can work for git? -> yes
 		
-	[ ] do i have any extensions installed in base?
+	[x] do i have any extensions installed in base?
+		-> a few like conda installed extensions
 		
 
 
