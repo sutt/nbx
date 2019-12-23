@@ -52,11 +52,54 @@ Todo:
 	
 	[x] basecamp: freshen up dev directory
 		- remove submodules
+			> add folders to .gitingore
+			> git rm -r --cached <folder>
 		- remove unnec. notebooks
+		
+	[x] add animate/select functions to demo_function
+	
+	[x] two notebooks:
+		[x] document reload+goto behavior in detail
+		[x] document misc js methods
+		[x] move misc functionality out of cpr into cpr.misc
+		
+	
+	[ ] templates.js -> how to load into python strings?
+		-> perhaps build one big js function with boolean switches for functionality,
+		   and simply set the flags for the switches in python
+	
+	[ ] add save function
+	
+    [ ] log interesting jupyter bug: when we print js to cell output, jupyter exectutes it
+		- realod_nb() prints js to the cell's output
+		- bug: when IPython.notebook.load_notebook() is called, 
+		
+		[ ] document the call stack which is executing it:
+			- load_notebook_success()
+				- Notebook.fromJSON(<bomb_cell_number>)
+					-CodeCell.fromJSON(data.outputs, ...)
+				
+				where data,outputs[0].data: {application/javascript: "var mything = ..." ...}
+				? where does the application/javascript thing come from? in my output?
+					-> no I never print it.
+				
+				...
+				OutputArea.append_mime_type
+		
+		- does this occur when notebook is first loaded from jupyter dashboard?
+		- does this only occur when you've import display.display and Javascript?
+		- does this only occur if notebook is "trusted"? 
+			-> for me the nb is trusted by default
+			-> how to turn trust off?
+		- extra malicious: overwrite the js after load, to hide the problem
 		
 	[ ] prototype the json insert
 	
-	[ ] need to add ____ ?
+	[ ] temporarily freeze autosave - to prevent simultaeneous writes to .ipynb
+	
+	[ ] add configuration files for nbx behaviors, e.g. cell flash
+		both workspace and user settings
+	
 
 	12.18
 	
@@ -238,6 +281,88 @@ Todo:
 
 Detailed Notes:
 -----------------------------
+		
+		12.28
+		
+		+ where is the mian function I care about:
+		
+			misc/saved-files/ignores/book1-download/main.min.js.download 45571
+			
+			Notebook.prototype.load_notebook = function (notebook_path) {
+			
+		+ to select a particular cell:
+		
+			>IPython.notebook.select(1)
+			
+		+ a little jquery animate:
+			https://stackoverflow.com/questions/190560/jquery-animate-backgroundcolor
+		
+			function() {
+				$(html_cell).stop().animate({backgroundColor:'#008000'}, 300);
+			}, function () {
+				$(html_cell).stop().animate({backgroundColor:'#FFFFFF'}, 300);
+			});
+			
+			This almost works, but we need to adjust for non-blocking nature of js
+			function flip() {
+				console.log(html_cell);
+				await $(html_cell).stop().animate({backgroundColor:'#008000'}, 300);
+				await $(html_cell).stop().animate({backgroundColor:'#FFFFFF'}, 300);
+			};
+			flip();
+			
+			>$(html_cell).stop().animate({backgroundColor:'#008000'}, 300);
+			>$(html_cell).stop().animate({backgroundColor:'#FFFFFF'}, 300);
+			
+		+ how to execute synchronously:
+			https://stackoverflow.com/questions/5187968/how-should-i-call-3-functions-in-order-to-execute-them-one-after-the-other
+			
+			"Promises"-> works!
+			Promise.resolve($(html_cell).stop().animate({backgroundColor:'#008000'}, 300).promise()).then(function(){
+				return $(html_cell).stop().animate({backgroundColor:'#FFFFFF'}, 300);
+			});
+
+			
+			"setTimeout" -> doesn't work
+			function flip() {
+				var t = 1000;
+				console.log('begin');
+				function green (){
+					$(html_cell).stop().animate({backgroundColor:'#008000'}, t);
+					};
+				function white () {
+					$(html_cell).stop().animate({backgroundColor:'#FFFFFF'}, t);
+					};
+				//setTimeout(green, t);
+				//setTimeout(white, 2*t);
+				function executeAsynchronously(functions, timeout) {
+				  for(var i = 0; i < functions.length; i++) {
+					setTimeout(functions[i], timeout);
+				  }
+				}
+				executeAsynchronously([green, white], t);
+				console.log('done');
+			};
+			flip();
+			
+			"Callbacks" -> doesn't work
+			function flip() {
+				console.log(html_cell);
+				function green (callback){
+					$(html_cell).stop().animate({backgroundColor:'#008000'}, 300);
+					callback();
+					}
+				function white (callback){
+					$(html_cell).stop().animate({backgroundColor:'#FFFFFF'}, 300);
+					}
+				function final () { console.log('done'); }
+				final();
+				green( function() {
+					white( function() {
+						final();
+					});
+				});
+			}
 		
 		12.16
 		

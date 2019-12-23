@@ -1,5 +1,8 @@
 **/.ipynb_checkpoints/*
 misc/saved-files/ignores/
 *.pyc
+**/__pycache__/*
 student/
 teacher/
+misc/books/debug-js.js
+.vscode

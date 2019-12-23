@@ -9,7 +9,17 @@ except:
 
 # Documentation + Tips ---------------
 '''
-# getting notebooks in <root>/misc/book to import <root>/cpr
+TODOS
+
+[ ] save functionality
+[ ] laod js from templates
+    -> a separate file for each js function?
+    -> how to set flag variables in python string?
+
+Documentation & Tips:
+
++ getting notebooks in <root>/misc/book to import <root>/cpr:
+
 import sys
 sys.path.append('../../')
 from IPython import display
@@ -19,80 +29,87 @@ from IPython.display import Javascript
 import cpr.cpr as cpr
 
 '''
-# Demo Functions ----------------------
 
-def demo_js():
-    ''' 
-         demo_js uses `display.display()` to execute a Javascript payload
+
+def reload_nb(  b_save=False,
+                b_scroll=True,
+                b_select=True,
+                b_flash=True,
+                b_log=True,
+                debug=False,
+                ):
+    '''
+         reload-notebook + goto-cell via javascript
+
+         b_ variables - control different behaviors
+         debug        - if True, output js to txt file
+
+         note: do not print js to notebook which creates a loop
+               
     '''
     
-    print('see devtools console for output')
-    display(
-        Javascript(data='console.log("demo_js");')
-    )
     
-def demo_js_to_python():
-    ''' 
-         demo_js uses a trick to get data in js into the python kernel
-    '''
-    
-    js = '''
-    Ipython.notebook.kernel.execute("a=1");
-    Ipython.notebook.kernel.execute("print(f'the value of `a` is : {a}`");
+    def js_bool(py_bool):
+        if py_bool: return 'true'
+        return 'false'
+
+    js = f'''
+    var b_save = {js_bool(b_save)};
+    var b_scroll = {js_bool(b_scroll)};
+    var b_select = {js_bool(b_select)};
+    var b_flash = {js_bool(b_flash)};
+    var b_log = {js_bool(b_log)};
     '''
 
-    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
+
+    js += '''
     
-    display(Javascript(data=js))
-    
-
-# Basic Functionality ------------------
-
-def reload_nb(b_save=False):
-    '''
-         realod the noetbook thru javascript
-         b_save: if True, saves notebook before reload
-
-         note: we'll probably want to save in a separate function, 
-               before the git add/commit/pull.
-    '''
-        
-    if b_save:
-        print('b_save NotImplemented')
-
-    # js = '''
-    # var nb_path = IPython.notebook.notebook_path;
-    # var mycell = IPython.notebook.get_selected_cell();
-    # var mycellelement = $(mycell.element);
-    # IPython.notebook.load_notebook(nb_path);
-    # mycellelement[0].scrollIntoViewIfNeeded({inline:'center'});
-    # '''
-
-    js = '''
     var nb_path = IPython.notebook.notebook_path;
-    var mycell_index = IPython.notebook.get_selected_index();
+    var cell_index = IPython.notebook.get_selected_index() - 1;
+    
+    if (b_log) {console.log('selected_index: ' + cell_index);}
+
+    // need to do the Promise thing for async nature
+    //if {b_save) {IPython.notebook.save_notebook();}
+    
     IPython.notebook.load_notebook(nb_path);
-    console.log('after load')
+    
+    if (b_log) {console.log('after load');}
+    
     setTimeout(basicFunc, 500);
     function basicFunc() {
+        
         console.log('in basicFunc');   
-        var orig_cell = IPython.notebook.get_cell(mycell_index);
-        $(orig_cell.element)[0].scrollIntoViewIfNeeded({inline:'center'});
-        console.log('final line.')
+        var orig_cell = IPython.notebook.get_cell(cell_index);
+        var html_cell = $(orig_cell.element)[0];
+        
+        if (b_scroll) {
+        $(orig_cell.element)[0].scrollIntoViewIfNeeded({inline:'center'});}
+        
+        if (b_select) {IPython.notebook.select(cell_index);}
+        
+        function flash(ms_flash) {
+            Promise.resolve(
+                $(html_cell).stop().animate({backgroundColor:'#008000'}, ms_flash).promise()
+                ).then(function(){
+                    return $(html_cell).stop().animate(
+                        {backgroundColor:'#FFFFFF'}, ms_flash);
+                    }
+                );
+        }
+        if (b_flash) {flash(500);}
+        
+        if (b_log) {console.log('end of basicFunc')}
     }
-    console.log('done')
+    
+    if (b_log) {console.log('done');}
     '''
-    
-    # js = '''
-    # console.log('begin')
-    # function basicFunc() {
-    #     console.log('in basicFunc');
-    # }
-    # setTimeout(basicFunc, 3000);
-    # console.log('done')
-    # '''
-    
-    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
 
-    display.display(Javascript(js))
+    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
+    
+    if debug:
+        with open('js-debug.js', 'w') as f:
+            f.write(js)
+
+    display(Javascript(js))
     
