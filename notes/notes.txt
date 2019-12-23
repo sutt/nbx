@@ -67,8 +67,32 @@ Todo:
 	[ ] templates.js -> how to load into python strings?
 		-> perhaps build one big js function with boolean switches for functionality,
 		   and simply set the flags for the switches in python
+
 	
-	[ ] add save function
+	[x] add save function
+		[x] verify the async nature, via console -> yes
+		[x] simple promise hack with .then() -> no
+		[x] replicate pattern for animate -> no, can't do 
+		[x] should we use the passed back promise option? -> idk
+		[x] catch events in jupyter? 
+			-> can't find 'notebook_saved.Notebook' in python api 
+				(this is triggered in save_notebook_success)
+		[x] download examples and see if someone else uses save_notebook
+			-> printview/main.js has this method
+		[x] it's hard to verify if save notebook has completed?
+			->debugger
+			-> yes, verified via 
+		
+	[ ] advanced save functionality
+		[ ] how do we call back to python (in order to run git-merge) once save_notebook within js is completed?
+			[ ] demonstrate if display(Javascript()) is blocking in python?
+		[ ] what does the boolean argument in save_notebook(bool) do?
+			
+	[x] next commit:
+		[x] implement save functionality in reload_nb()
+		[x] update BasicCpr1
+		[x] add templates.js
+		[x] put some of the js discoveries in misc cpr
 	
     [ ] log interesting jupyter bug: when we print js to cell output, jupyter exectutes it
 		- realod_nb() prints js to the cell's output

@@ -11,7 +11,7 @@ except:
 '''
 TODOS
 
-[ ] save functionality
+[x] save functionality
 [ ] laod js from templates
     -> a separate file for each js function?
     -> how to set flag variables in python string?
@@ -69,9 +69,25 @@ def reload_nb(  b_save=False,
     
     if (b_log) {console.log('selected_index: ' + cell_index);}
 
-    // need to do the Promise thing for async nature
-    //if {b_save) {IPython.notebook.save_notebook();}
+    //save notebook waits for finish
+    if (b_save) {
+        Promise.resolve(
+        IPython.notebook.save_notebook(true)
+        ).then(function(){
+            // this is where we'll call to python kernel
+            return console.log('done with save')
+            }
+        ).then(function() {
+            return theRest();
+            }
+        );
+
+    } else {
+        theRest();
+    }
     
+    function theRest() {
+
     IPython.notebook.load_notebook(nb_path);
     
     if (b_log) {console.log('after load');}
@@ -100,9 +116,12 @@ def reload_nb(  b_save=False,
         if (b_flash) {flash(500);}
         
         if (b_log) {console.log('end of basicFunc')}
-    }
+    } // end basicFunc ------------
     
-    if (b_log) {console.log('done');}
+    if (b_log) {console.log('done with theRest()');}
+    } // end theRest---------------
+    
+    if (b_log) {console.log('end of js payload');}
     '''
 
     js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
