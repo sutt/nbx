@@ -48,11 +48,25 @@ Overview / Main Points
 Todo:
 -------------------------
 
+	12.23
+	
+	[x] basecamp: freshen up dev directory
+		- remove submodules
+		- remove unnec. notebooks
+		
+	[ ] prototype the json insert
+	
+	[ ] need to add ____ ?
+
 	12.18
 	
-	[ ] re-organize notes
+	[x] re-organize notes
 	
-	[ ] MVP - demo to brianna level
+	[ ] MVP - demo to brianna level, ideally ready for Jenny on Friday afternoon.
+	
+		misc
+		[ ] kernel.execute()
+		[ ] cleanup old HelloCpr notebooks
 	
 		[ ] javascript aspect
 			[ ] load_notebook
@@ -66,6 +80,18 @@ Todo:
 		[ ] module skeleton
 			[ ] teach
 			[ ] get_answer
+			
+	
+	+ Brainstorm future features:
+	
+		important to do's:
+		- is python able to parse these jsons well? for example excaping quotes and images, etc?
+	
+		- need a way to select only certain cells for broadcast
+		
+		- note you don't actually git commit/push/pull the notebook itself but a secondary representation which allows another module to insert with union-style particular cells
+		
+		- so...because there's a secondary [partial] representation that doesn't nec. match either the teacher's or student's notebook, we need a way to consolidate and reconcile both versions (even if they end up in a different order) for git commit.
 	
 	12.17
 	

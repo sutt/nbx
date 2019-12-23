@@ -1,3 +1,5 @@
 **/.ipynb_checkpoints/*
 misc/saved-files/ignores/
 *.pyc
+student/
+teacher/
