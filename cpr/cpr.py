@@ -42,7 +42,7 @@ def reload_nb(  b_save=False,
          reload-notebook + goto-cell via javascript
 
          b_ variables - control different behaviors
-         debug        - if True, output js to txt file
+         debug        - if True, output string of js commands to file
 
          note: do not print js to notebook which creates a loop
                
@@ -127,8 +127,11 @@ def reload_nb(  b_save=False,
     js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
     
     if debug:
-        with open('js-debug.js', 'w') as f:
-            f.write(js)
+        try:
+            with open('assets/js-debug.js', 'w') as f:
+                f.write(js)
+        except:
+            print('debug option set True, but failed to output js to `assets/js-debug.js. directory might not exist?')
 
     display(Javascript(js))
     

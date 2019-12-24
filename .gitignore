@@ -4,6 +4,5 @@ misc/saved-files/ignores/
 **/__pycache__/*
 student/
 teacher/
-misc/books/debug-js.js
 .vscode
 misc/jupyter_contrib_nbextensions/

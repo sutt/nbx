@@ -48,7 +48,45 @@ Overview / Main Points
 Todo:
 -------------------------
 
+	12.24
+	
+	Thoughts:
+		+ is git going to be able to merge cells.json well?
+			- is there a force --local or force --remote merge option?
+			- what kind of situations break merge? when there's multiple
+			  of the same cell?
+		+ do we have to pull before pushing?
+			- only when there's 2-way pushing, correct?
+	
+	[x] Finish commit of merge.py functionality
+		[x] add merge.py
+		[x] add .cpr
+		[x] delete extra notebooks
+		[x] add BasicMerge1.ipynb
+			[x] matplotlib example
+		[x] add ParseJson1.ipynb
+		[x] cleanup directory, assets
+			[x] demo.ipynb, demo2.ipynb to own directory
+			[x] fix calls in ParseJson1
+			[x] js-debug.js -> assets
+	
 	12.23
+	
+	Thoughts:
+		+ we can either:
+			- find the selected cell via text parsing
+			- pass it's index from js
+		
+		+ this is an MVC app:
+			
+			M: is mostly the .ipynb format, also some counter stuff for nbx tracking indexes
+			
+			V: the "front-end" javascript aspect like load_notebook, goto cell, and the git pull portion
+			
+			C: save_notebook and the git commit/push portion allows us to write to the model
+			
+			-> we don't need to sync the models, only apply a insert at each step
+			
 	
 	[x] basecamp: freshen up dev directory
 		- remove submodules
@@ -94,6 +132,9 @@ Todo:
 		[x] add templates.js
 		[x] put some of the js discoveries in misc cpr
 	
+	[x] demonstrate rewriting notebook using f.write()
+		-> need to save notebook before running give_answer() or get_answer()
+	
     [ ] log interesting jupyter bug: when we print js to cell output, jupyter exectutes it
 		- realod_nb() prints js to the cell's output
 		- bug: when IPython.notebook.load_notebook() is called, 
@@ -118,7 +159,8 @@ Todo:
 		- extra malicious: overwrite the js after load, to hide the problem
 		
 	[ ] prototype the json insert
-	
+		[ ] check the sizeof the json, if too large warn...
+		
 	[ ] temporarily freeze autosave - to prevent simultaeneous writes to .ipynb
 	
 	[ ] add configuration files for nbx behaviors, e.g. cell flash
@@ -194,7 +236,7 @@ Todo:
 	
 	[ ] where are static [js] files kept in my python environment?
 	
-	[ ] jquery flash the color?
+	[x] jquery flash the color?
 	
 	start looking into git merging and adding patches (only some content from cells)
 	
