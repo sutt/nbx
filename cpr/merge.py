@@ -70,7 +70,7 @@ def insert_cell(cell_index,
     return new_json
 
 
-def give_answer(fn_nb):
+def give_answer(fn_nb, term='give_answer('):
     '''
         append cell above onto answers
     '''
@@ -81,7 +81,7 @@ def give_answer(fn_nb):
     # Get Answer from teacher notebook
     nb_json = json.load(open(fn_nb, 'r'))
 
-    nb_index = find_answer_index(nb_json['cells'], term='give_answer(')
+    nb_index = find_answer_index(nb_json['cells'], term=term)
     
     nb_cell = nb_json['cells'][nb_index - 1]   # take cell above
 
@@ -105,7 +105,7 @@ def give_answer(fn_nb):
     return 
     
 
-def get_answer(fn_nb, b_replace=True):
+def get_answer(fn_nb, term='get_answer', b_replace=True):
     '''
          take last answer
          
@@ -135,7 +135,7 @@ def get_answer(fn_nb, b_replace=True):
         raise Exception(f'unable to read current notebook: {fn_nb}')
 
     try:
-        nb_index = find_answer_index(nb_json['cells'], term='get_answer')
+        nb_index = find_answer_index(nb_json['cells'], term=term)
     except:
         raise Exception(f'unable to get last answer from list')
     

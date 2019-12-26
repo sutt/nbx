@@ -50,6 +50,9 @@ Todo:
 
 	12.26
 	
+	Thoughts:
+		+ blog post - jupyter based dev
+	
 	[x] can we add student and teacher repos by gitignoring the .git folder?
 		-> yes with a little care:
 		> add `teacher/teacher-cpr/.git` to .gitignore
@@ -58,13 +61,13 @@ Todo:
 		-> note: we use remote=local for these repos
 		[x] add new demonstration of functionality.
 	
-	[ ] very basic git-push and git-pull
+	[z] very basic git-push and git-pull
 		- as check_output call to bash script?
-			[ ] run a time.time() recorder to see significant lag between
+			[x] run a time.time() recorder to see significant lag between
 				pre/post git-action
-		[ ] subprocess calling directory experiments
+		[x] subprocess calling directory experiments
 		
-	[ ] morning commit: 
+	[x] morning commit: 
 		[x] adding gitcomm
 		[x] subproc
 			[x] add only .cpr
@@ -73,11 +76,27 @@ Todo:
 		[x] demo: teacher: answer-send, student: answer-receive 
 		
 	[ ] second commit
+		[ ] notebook describing gitcomm functionality
+			[ ] why doesn't git push print out?
 		[ ] some unittests for cmd_adj
-		[ ] one function for suproc in push_answer(), pull_answer()
-		[ ] take all three actions to one function:
+			-> need to name files test_* 
+			[x] run pytest for python3?
+				-> conda activate base (which give python PATH priority)
+		[ ] git mv cpr.py -> frontjs.py
+			[ ] need to correct all the notebooks using cpr
+		
+		[x] one function for suproc in push_answer(), pull_answer()
+			[x] need to adjust term in give/get _answer
+			
+		[ ] need a log file, printing to notebook will just get overwritten.
+		
+		[x] take all three actions to one function:
 			cpr.reload_nb(), merge.give_answer(), gitcomm.answer_push()
 			-> in nbx?
+			
+	[ ] dev settings
+		[ ] exclude __pycache__ from vscode explorer
+		[ ] intellisense for vscode can't handle dot imports, e.g. .merge
 		
 	[ ] how to push/pull from particular commit-shas in git?
 		-> maybe just separate branches?
