@@ -65,17 +65,23 @@ Todo:
 		[ ] subprocess calling directory experiments
 		
 	[ ] morning commit: 
-		[ ] adding gitcomm
-		[ ] subproc
-			[ ] add only .cpr
-		[ ] remove .sh scripts
-		[ ] demo: teacher: answer-send, student: answer-receive 
+		[x] adding gitcomm
+		[x] subproc
+			[x] add only .cpr
+			[x] capture some check_output 
+		[x] remove .sh scripts
+		[x] demo: teacher: answer-send, student: answer-receive 
 		
 	[ ] second commit
+		[ ] some unittests for cmd_adj
+		[ ] one function for suproc in push_answer(), pull_answer()
 		[ ] take all three actions to one function:
 			cpr.reload_nb(), merge.give_answer(), gitcomm.answer_push()
+			-> in nbx?
 		
-		
+	[ ] how to push/pull from particular commit-shas in git?
+		-> maybe just separate branches?
+	
 	[ ] get notebook name from js -> python; pass to give_answer, get_answer
 	
 	[ ] still need the async call from save_notebook -> merge.write_answer
@@ -104,6 +110,8 @@ Todo:
 		[ ] multi-notebook support: when there's tow notebook
 		[ ] support for forks:
 			-> defaults to origin's url, but has
+		[ ] we don't want to trust js in output-section of an answer cell:
+			e.g. IPython.kernel.execute('os.rmdir("/");')
 		
 	cells.json schema
 		[ ] multinotebook support

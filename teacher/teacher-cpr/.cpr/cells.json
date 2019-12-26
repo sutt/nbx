@@ -1,0 +1,1 @@
+{"cells": [{"cell_type": "code", "execution_count": 42, "metadata": {}, "outputs": [{"data": {"text/plain": ["'ab'"]}, "execution_count": 42, "metadata": {}, "output_type": "execute_result"}], "source": ["#answer cell\n", "q = ['a', 'b']\n", "qq = ''.join(q)\n", "qq"]}]}

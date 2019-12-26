@@ -105,9 +105,11 @@ def give_answer(fn_nb):
     return 
     
 
-def get_answer(fn_nb):
+def get_answer(fn_nb, b_replace=True):
     '''
          take last answer
+         
+         b_replace (bool) - overwrite cell with get_answer() code
     '''
     ec = check_directory()
     if not(ec): raise Exception(f'no answer directory {CELLS_DIR}')
@@ -137,7 +139,7 @@ def get_answer(fn_nb):
     except:
         raise Exception(f'unable to get last answer from list')
     
-    new_nb_json = insert_cell(nb_index, answer_cell, nb_json)
+    new_nb_json = insert_cell(nb_index, answer_cell, nb_json,b_replace=b_replace)
 
     if len(new_nb_json.keys()) < 1:
         raise Exception('new_nb_json has no keys, not valid, not writing out')
