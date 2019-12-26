@@ -48,6 +48,69 @@ Overview / Main Points
 Todo:
 -------------------------
 
+	12.26
+	
+	[x] can we add student and teacher repos by gitignoring the .git folder?
+		-> yes with a little care:
+		> add `teacher/teacher-cpr/.git` to .gitignore
+		> git add teacher/teacher-cpr/ (good: adds all content sans .git)
+		> git add teacher/             (bad: adds as a submodule)
+		-> note: we use remote=local for these repos
+		[x] add new demonstration of functionality.
+	
+	[ ] very basic git-push and git-pull
+		- as check_output call to bash script?
+			[ ] run a time.time() recorder to see significant lag between
+				pre/post git-action
+		[ ] subprocess calling directory experiments
+		
+	[ ] morning commit: 
+		[ ] adding gitcomm
+		[ ] subproc
+			[ ] add only .cpr
+		[ ] remove .sh scripts
+		[ ] demo: teacher: answer-send, student: answer-receive 
+		
+	[ ] second commit
+		[ ] take all three actions to one function:
+			cpr.reload_nb(), merge.give_answer(), gitcomm.answer_push()
+		
+		
+	[ ] get notebook name from js -> python; pass to give_answer, get_answer
+	
+	[ ] still need the async call from save_notebook -> merge.write_answer
+		- use a polling loop thread in python waiting
+		
+	[ ] connect student and teacher to a repo and start demo-ing examples
+	
+	[ ] git specialty functionality
+		[ ] how to only add .cpr directory?
+		[ ] how to find root of repo?
+		
+	[ ] add all functionalities: front-end (reload_nb), controller (merge.py) and model-comm (gitcomm.py) into functions give_answer, get_answer
+	
+	[ ] notebook trust issues:
+		[ ] how do nb's downloaded from git end up?  untrusted?
+		[ ] how do you convert trust <-> untrust, simplest way possible?
+			-> will need to include this instructions
+		[ ] untrusted nbs cant execute display(Javascript()), correct?
+		[ ] how to check for trust within the notebook?
+		[ ] a git hook to trust the notebook?
+		[ ] a shell script run via subprocess to trust the script
+	
+	misc issues
+		[ ] git needs password saved
+		[ ] send other files in git push/pull
+		[ ] multi-notebook support: when there's tow notebook
+		[ ] support for forks:
+			-> defaults to origin's url, but has
+		
+	cells.json schema
+		[ ] multinotebook support
+		[ ] ordered answers
+	
+
+
 	12.24
 	
 	Thoughts:
@@ -57,6 +120,10 @@ Todo:
 			  of the same cell?
 		+ do we have to pull before pushing?
 			- only when there's 2-way pushing, correct?
+		+ there's two methods of operating: 	
+			1-to-many teacher->students
+			1-to-1:   student<->student "pair programming"
+		
 	
 	[x] Finish commit of merge.py functionality
 		[x] add merge.py
@@ -69,6 +136,8 @@ Todo:
 			[x] demo.ipynb, demo2.ipynb to own directory
 			[x] fix calls in ParseJson1
 			[x] js-debug.js -> assets
+			
+
 	
 	12.23
 	
@@ -139,7 +208,7 @@ Todo:
 		- realod_nb() prints js to the cell's output
 		- bug: when IPython.notebook.load_notebook() is called, 
 		
-		[ ] document the call stack which is executing it:
+		[x] document the call stack which is executing it:
 			- load_notebook_success()
 				- Notebook.fromJSON(<bomb_cell_number>)
 					-CodeCell.fromJSON(data.outputs, ...)

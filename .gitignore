@@ -2,7 +2,7 @@
 misc/saved-files/ignores/
 *.pyc
 **/__pycache__/*
-student/
-teacher/
+student/student-cpr/.git/
+teacher/teacher-cpr/.git/
 .vscode
 misc/jupyter_contrib_nbextensions/
