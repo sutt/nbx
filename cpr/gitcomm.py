@@ -60,7 +60,7 @@ def push_answer(remote_name='local', b_log=False):
          note: commit message must have no spaces right now
     '''
     cmd = f'''
-    git add .cpr
+    git add .cpr/cells.json
     git commit -m 'push-answer-script'
     git push {remote_name} master
     git status

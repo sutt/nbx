@@ -1,4 +1,5 @@
 import subprocess
+import time
 
 try:
     from IPython.display import Javascript
@@ -14,6 +15,7 @@ TODOs
 
 
 '''
+
 
 # JS Functionality ----------------------
 
@@ -42,6 +44,109 @@ def demo_js_to_python():
     
     display(Javascript(data=js))
 
+# these are illustrative demo function connected to 
+# JsToPythonScope.ipynb -------------------------------------------------------
+
+def demo_js_scope_a():
+    ''' 
+         there's a tricky bug around getting the scope(?) correct to use the 
+         newly set python variable within the js-calling module's method. 
+            - once the input cell returns scope back to a notebook, 
+                we can see the value has been set
+
+         only after the full(?) cell has been run
+    '''
+    
+    js = '''
+    IPython.notebook.kernel.execute("a=99");
+    '''
+
+    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
+    
+    display(Javascript(data=js))
+
+    return None
+
+def demo_js_scope_b():
+    ''' 
+         set b to 99
+    '''
+    
+    js = '''
+    IPython.notebook.kernel.execute("b=99");
+    '''
+
+    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
+    
+    display(Javascript(data=js))
+
+    return None
+
+def demo_js_scope_d():
+    ''' 
+         set d to 99
+    '''
+    
+    js = '''
+    IPython.notebook.kernel.execute("d=99");
+    '''
+
+    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
+    
+    display(Javascript(data=js))
+
+    return None
+
+def demo_js_scope_e():
+    ''' 
+         set e to 99
+         and run kernel.do_one_iteration()
+    '''
+    ip = get_ipython()
+    
+    ip.kernel.do_one_iteration()
+    # ip.kernel.do_one_iteration()
+    js = '''
+    IPython.notebook.kernel.execute("e=99");
+    '''
+
+    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
+    
+    display(Javascript(data=js))
+
+    ip.kernel.do_one_iteration()
+
+    return None
+
+def demo_js_scope_q():
+    ''' 
+         set d to 99
+    '''
+    
+    js = '''
+    IPython.notebook.kernel.execute("q.put(99)");
+    '''
+
+    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
+    
+    display(Javascript(data=js))
+
+    return None
+
+def demo_js_scope_c(val):
+    ''' 
+         set c to val
+    '''
+    
+    js = f'''
+    IPython.notebook.kernel.execute("c={val}");
+    '''
+
+    js = '\n'.join([line.strip() for line in js.split('\n') if line.strip !=''])
+    
+    display(Javascript(data=js))
+
+    return None
 
 def promise_pattern():
     '''

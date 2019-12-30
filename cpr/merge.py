@@ -60,12 +60,12 @@ def insert_cell(cell_index,
         try:
             _pop = new_json['cells'].pop(cell_index)
         except:
-            print(f'could not remove cell from index: {index}')
+            print(f'could not remove cell from index: {cell_index}')
     
     try:
         new_json['cells'].insert(cell_index, new_cell)
     except:
-        print(f'could not insert new_cell at index: {index}')
+        print(f'could not insert new_cell at index: {cell_index}')
     
     return new_json
 
@@ -143,7 +143,6 @@ def get_answer(fn_nb, term='get_answer', b_replace=True):
 
     if len(new_nb_json.keys()) < 1:
         raise Exception('new_nb_json has no keys, not valid, not writing out')
-        return
 
     
     try:

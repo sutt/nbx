@@ -48,6 +48,51 @@ Overview / Main Points
 Todo:
 -------------------------
 
+	12.29
+	
+		[x] get a commit in with new hack
+			
+			[x] clean up directory
+			
+			[x] finish up books for now:
+				[x] MiscCprJS.ipynb
+				[x] JsToPythonScope.ipynb
+				
+			[~] nb to demo new functionality of no notebok name
+			
+		[ ] next commit
+			[ ] demo in book2: nb_name, both specified and implicit
+			
+		[ ] dev settings, 
+		
+			[ ] no autocomplete for local variables
+			
+			import problems (have to be fixed with __init__.py)
+			https://github.com/Microsoft/vscode-python/issues/3840
+			https://github.com/Microsoft/python-language-server/issues/887
+			https://github.com/microsoft/python-language-server/issues/1156
+			
+	
+	12.28
+	
+		[ ] finish up on the js->python bug; if it's not resolved invent a hack
+		
+			[ ] try get_ipython() solution
+				[ ] find the line of code
+				
+			if that doesn't work
+			[ ] commit problem books
+				[ ] add links to other people with the problem
+				[ ] add proposed solutions:
+					- onLoad e..g in notebook's call to from nbx import get_answer() just drop it into the kernel then!
+				
+			[ ] add a hack solution:
+				- by default take the "last" .ipynb file (so no argument)
+				- and an argument
+				
+			[ ] are there more spots in the workflow where we need js->python messaging? postSave?
+		
+
 	12.26
 	
 	Thoughts:
@@ -78,6 +123,8 @@ Todo:
 	[ ] second commit
 		[ ] notebook describing gitcomm functionality
 			[ ] why doesn't git push print out?
+				-> looks like cursor gets active as soon as cmd is run
+		[ ] send notebook name module
 		[ ] some unittests for cmd_adj
 			-> need to name files test_* 
 			[x] run pytest for python3?
@@ -94,14 +141,66 @@ Todo:
 			cpr.reload_nb(), merge.give_answer(), gitcomm.answer_push()
 			-> in nbx?
 			
-	[ ] dev settings
-		[ ] exclude __pycache__ from vscode explorer
-		[ ] intellisense for vscode can't handle dot imports, e.g. .merge
+	[x] dev settings
+		[x] exclude __pycache__ from vscode explorer
+			-> in settings, under "files.exclude"
+		[x] intellisense for vscode can't handle dot imports, e.g. .merge
+			-> imported chess workspace settings
+			-> added a __init__.py to cpr directory
+			-> updated vscode extension		
+				Id: ms-python.python
+				Version: 2019.2.5558
+					->
+				Version: 2019.3.6558
+		
 		
 	[ ] how to push/pull from particular commit-shas in git?
 		-> maybe just separate branches?
 	
-	[ ] get notebook name from js -> python; pass to give_answer, get_answer
+	[x] get notebook name from js -> python; pass to give_answer, get_answer
+		[x] write it out to a file
+		
+		[x] breakout session:
+			[x] new notebook
+			[x] print below but within the same input cell
+			[x] parsing the globals() as string
+			[~] using a class instatiation
+			- can just writeout to .cpr/.nbname?
+				-> no: no writing untill all "input-code" is run and then "output/kernel.execute" code gets run
+			[x] update push_answer() to specify only cells.json
+			
+			
+			-> this is still giving me problems because js doesn't execute untill all python from kernel is finished?
+			
+			-> note: if an exception occurs while executing the python, 
+				the call to display(Javascript(js)) gets cancelled
+				
+			- closest issue I've found on this:
+			https://github.com/jupyter/notebook/issues/3187
+			
+				-also:
+				https://github.com/ipython/ipykernel/issues/369
+				https://github.com/jupyter/notebook/issues/3533
+				
+				- these should work?
+				https://jupyter-notebook.readthedocs.io/en/stable/comms.html
+				
+				- very helpful
+				https://github.com/WorldWideTelescope/pywwt/issues/210
+				
+					- a pattern here works
+					https://github.com/kafonek/ipython_blocking
+					
+				- another guy, same problem:	https://stackoverflow.com/questions/30902898/ipython-notebook-javascript-retrieve-content-from-javascript-variables
+				
+				https://github.com/ipython/ipython/issues/7804
+				
+				- maybe this guy solves it?	https://github.com/jdfreder/ipython-jsobject/blob/master/jsobject/utils.py
+				
+				-> searching github for "javascript display" gives lots of promising leads
+				
+				-> can also try multiprocessing example	https://stackoverflow.com/questions/2846653/how-can-i-use-threading-in-python
+					
 	
 	[ ] still need the async call from save_notebook -> merge.write_answer
 		- use a polling loop thread in python waiting
