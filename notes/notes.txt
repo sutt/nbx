@@ -48,8 +48,21 @@ Overview / Main Points
 Todo:
 -------------------------
 
-	12.29
+	12.31
 	
+		"ship ship ship"
+		[x] do we need to use ImportClass? -> no
+		[x] build js-based scripts for give + receive
+		[x] commit it
+		
+		- major things holding us away from v0.1
+			[ ] little details like notebook could be in a dir, find_git_root, etc
+			[ ] api specified with options
+		 - other important things:
+		    [ ] don't search for cell input term, use cell selection index
+			[ ] setTimeout's in nbx2.get_answer()
+	
+	12.29
 		[x] get a commit in with new hack
 			
 			[x] clean up directory
@@ -60,10 +73,20 @@ Todo:
 				
 			[~] nb to demo new functionality of no notebok name
 			
-		[ ] next commit
-			[ ] demo in book2: nb_name, both specified and implicit
+		[x] next commit
 			
-		[ ] dev settings, 
+			[~] demo in book2: nb_name, both specified and implicit
+			
+			[x] save functionality included
+				- with just a timeout for now?
+					-> this won't work because we can't do js first
+					
+				- ultimate hack: execute neccesary python 
+				  from kernel.execute with the sequential-js pattern
+				
+			
+		
+		[ ] vscode dev settings:
 		
 			[ ] no autocomplete for local variables
 			
@@ -75,22 +98,24 @@ Todo:
 	
 	12.28
 	
-		[ ] finish up on the js->python bug; if it's not resolved invent a hack
+		[x] finish up on the js->python bug; if it's not resolved invent a hack
 		
-			[ ] try get_ipython() solution
-				[ ] find the line of code
+			[x] try get_ipython() solution
+				[x] find the line of code
+				-> didn't work
 				
 			if that doesn't work
-			[ ] commit problem books
-				[ ] add links to other people with the problem
-				[ ] add proposed solutions:
+			[x] commit problem books
+				[x] add links to other people with the problem
+				[x] add proposed solutions:
 					- onLoad e..g in notebook's call to from nbx import get_answer() just drop it into the kernel then!
+					-> doesn't work, globals aren't shared across modules
 				
-			[ ] add a hack solution:
+			[x] add a hack solution:
 				- by default take the "last" .ipynb file (so no argument)
 				- and an argument
 				
-			[ ] are there more spots in the workflow where we need js->python messaging? postSave?
+			[x] are there more spots in the workflow where we need js->python messaging? postSave?
 		
 
 	12.26
@@ -124,7 +149,7 @@ Todo:
 		[ ] notebook describing gitcomm functionality
 			[ ] why doesn't git push print out?
 				-> looks like cursor gets active as soon as cmd is run
-		[ ] send notebook name module
+		[~] send notebook name module
 		[ ] some unittests for cmd_adj
 			-> need to name files test_* 
 			[x] run pytest for python3?
