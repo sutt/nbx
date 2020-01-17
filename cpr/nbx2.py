@@ -30,6 +30,7 @@ class ImportClass:
     def gitcomm_push_answer():
         push_answer()
 
+    @staticmethod
     def gitcomm_pull_answer():
         pull_answer(remote_name='local', 
                 b_log=False,

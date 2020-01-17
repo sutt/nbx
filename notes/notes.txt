@@ -15,13 +15,140 @@ Todo:
 		nbx2: send_answer/receive_answer
 		script searches for bottom-most instance of that string in a the nb, thus your answer prolly appeared at the bottom
 
-		[ ] base camp on git
-		[ ] get a new repo setup mirroring book4.ipynb
-			- add question2 as well
-			- does this reproduce across sessions? can you reproduce initial start?
+		[x] base camp on git
+		[x] get a new repo setup mirroring book4.ipynb -> nbx-demo-1
+			[x] add question2 as well
+			
+			[ ] does this reproduce across sessions? can you reproduce initial start?
 				- this could work with branch
+			
+			[x] puzzles is not trusted? -> click it to trust
+			
+			[ ] add a reset operation: reset_git.py
+				- e.g. copy in a folder to overwrite contents, then rm cells.json?
+					-> demos/nbx-demo-1-saved
+				- git rm -r .cells
+
+			[x] get it to work for send:
+					
+					[x] why is cells.json not appearing
+						-> can't see python error messages from nbx2
+
+					[x] try nbx.send_answer()
+					
+						bug here: nb_json = json.load(open(fn_nb, 'r', encoding='utf-8'))
+
+					[x] am i pushing to local instead of remote? -> yes
+						-> gitcomm.push_answer(remote_name='local')
+
+			[x] get it to work for receive:
+					[x] bug?? - in nbx2, ImportClass.gitcomm_pull_answer() is incorrect, no static method
+					-> apparently not for now, but corrected
+					-> only impacts nbx2
+			
+			[x] send_answer(remote='origin') to default
+
+			[x] remove ipython_blocking from root/cpr/
+
+			[x] bring changes into cpr/cpr instead of cpr/demos
+				- diff on both demo-1, demo-1-teacher
+				- to root
+				- remove cruft
+				- back to demo
+				- what command to replace?
+				
+				most common, remove cells.json
+				git rm -rf .cpr
+				git commit -m "reset: ws ready for solver"
+				git push
+
+				replace notebook files
+				cp -r nbx-demo-1-saved/*  nbx-demo-1/ 
+				cd nbx-demo-1
+
+				update the cpr files from cpr-dev to demo-cpr
+				cp ../../cpr/* nbx-demo-1/
+
+			
+
+			[x] full up n down
+			
+			[x] add save verbiage to puzzles.ipynb
+
+			[x] re-basecamp demo workspace
+				[x] test twice
+				[x] complete re-clone
+
+			[x] update cpr-dev git repo
+
+			11:30 - 12:00 wrap:
+				
+				rehearse presentation:
+					
+					+ https://github.com/sutt/nbx-demo-1
+
+					+ insturctions for solver:
+						- launch jupyter in root of clone repo. (nec?)
+						- make sure to save after the first receive_answer()
+
+					+ don't forget to CTRL+S 
+							- BEFORE RUNNING send_answer but,
+							+ AFTER TYPING send_answer
+
+					+ reset ws:
+					  >git rm -rf .cells
+						>git commit -m "reset ws"
+						>git push
+					  reclone:
+						 - have to shut down jupyter notebook in the dir to delete the dir; or just take cmd out of that dir
+						 >git clone https://github.com/sutt/nbx-demo-1 demo-1-teacher
+
+
+				- what's next?
+					- prezi for who?
+
+
+			further on:
+
+			- we could build two demos: demo-1: two player, demo-2: self play like i do
+			- can add a more advanced demo
+
+			[ ] add readme to nbx-demo-1
+
+			[ ] verbose option, to display some debugging info if it doesn't work at first
+			
+			[ ] add last-save reminder functionality
+				- check file modified time vs current system time.
+
+			[ ] could add a sys.stdout redirect in import class to log errors
+				- this only needed for the nbx2 version
+			
+			[ ] what if send_anser hangs? timeout?
+
+			[ ] test with untrusted
+					[ ] how to create untrusted?
+					[ ] for send
+					[ ] for receive
+					[ ] status following git clone?
+
+			[ ] what is the diff of functionality b/w nbx and nbx2?
+				- nbx requires at least one arg (possibly false if only 1 notebook?)
+				- nbx2 can save before actions
+				- nbx2 can conceivably solve latent bugs easily by passing into the kernel relevant data like nb_name, nb_path, cell index
+					-> these solve or ameliorate many hacks and user-demands created by python kernel being ignorant about notebook's current DOM state or filesystem state.
 
 		[ ] List out limitations
+				- searches for string to find answer; e.g. answer inserted at bottom with second receive_answer()
+				- no bottom cell padding bug (?)
+				- nbx2.get_answer autocompletes; hide that method and others (import module instead?)
+				- notebook must be at root of git repo
+				- can only send one anwser at a time
+				- first try bug? -> hasn't surfaced yet
+				- file access conflict when autosave occurs at same time (?)
+				- can only get most recent answer
+				- can only work with jupyter run from repos root (?) (unless nb path passed in)
+
+
 
 
 

@@ -7,3 +7,4 @@ teacher/teacher-cpr/.git/
 .vscode
 misc/jupyter_contrib_nbextensions/
 cpr/ipython_blocking/
+demos/

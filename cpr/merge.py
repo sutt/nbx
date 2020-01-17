@@ -79,7 +79,11 @@ def give_answer(fn_nb, term='give_answer('):
     if not(ec): raise Exception()
 
     # Get Answer from teacher notebook
-    nb_json = json.load(open(fn_nb, 'r'))
+    try:
+        with open(fn_nb, 'r', encoding='utf-8') as f:
+            nb_json = json.load(f)
+    except Exception as e:
+            raise Exception(f'''unable to read current notebook; encoding err? {e}''')
 
     nb_index = find_answer_index(nb_json['cells'], term=term)
     
@@ -111,10 +115,9 @@ def get_answer(fn_nb, term='get_answer', b_replace=True):
          
          b_replace (bool) - overwrite cell with get_answer() code
     '''
-    ec = check_directory()
-    if not(ec): raise Exception(f'no answer directory {CELLS_DIR}')
+    
     ec = check_file()
-    if not(ec): raise Exception(f'no answer json {CELLS_JSON}')
+    if not(ec): raise Exception(f'no answer json {CELLS_JSON} ; there may be no answers pushed to the remote yet.')
     
     # Read-in Answers
     try:
@@ -130,9 +133,10 @@ def get_answer(fn_nb, term='get_answer', b_replace=True):
     
     # Write answer into notbook
     try:
-        nb_json = json.load(open(fn_nb, 'r'))
-    except:
-        raise Exception(f'unable to read current notebook: {fn_nb}')
+        with open(fn_nb, 'r', encoding='utf-8') as f:
+            nb_json = json.load(f)
+    except Exception as e:
+        raise Exception(f'unable to read current notebook: {fn_nb}, {e}')
 
     try:
         nb_index = find_answer_index(nb_json['cells'], term=term)
