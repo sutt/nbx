@@ -1,52 +1,86 @@
-CellPullRequest:
-
 	
 Overview / Main Points
-------------------------
-
-	
-	- need a way to merge only certain cells, otherwise all the progress is overwritten
-	
-		- unless, we can create a merge strategy which does UNION on exisiting work and new additions
-		
-	- idea: create a "cool" guid in the cell where you want to receive the teachers-pr. This can be function in CPR-module. Once you have that unique string, in the notebook, merge can navigate and find it. e.g.:
-	
-		---------------
-		In[ ] cpr.public_code(2)
-		---------------
-		Out[ ] awesome-aardvark-2345
-		----------------
-		In [ ] 
-		----------------
-		
-			-> now we'll try to merge just below awesome-aardvark-2345 on the students notebook
-			
-	- Stages of Dev:
-		1.) teacher able to push out code to students
-		2.) students are able to deliver teacher their code
-		
-		- nice to haves:
-			- most projects will involve a datasets so that will need to be included in the 
-			- each student can have one main repo where teacher can sync with students progress
-			
-		- other things to consider:
-			- need to .gitignore large datasets, and ipynb_checkpoints, otherwise it will be a nightmare merge
-			- just add/commit the notebook in progress
-			
-	Marketing Thoughts:
-	
+------------------------	
 		nbx - notebook exchange
 		
-		to globals: "no more scrolling down"
+		 - pair programming without the clunkiness of working on someone's computer.
 		
-		to locals: pair programming without the clunkiness of working on someone's computer.
-		
-			- we'll create a wheel that will match people
-		
-		marketing material: a repo ready to go where you can "play with someone" e.g. it will have some leetcode challenges.
+		 - deliverable: a repo ready to go where you can "play against someone" e.g. it will have some leetcode challenges.
 		
 Todo:
 -------------------------
+
+	1.16
+
+		nbx2: send_answer/receive_answer
+		script searches for bottom-most instance of that string in a the nb, thus your answer prolly appeared at the bottom
+
+		[ ] base camp on git
+		[ ] get a new repo setup mirroring book4.ipynb
+			- add question2 as well
+			- does this reproduce across sessions? can you reproduce initial start?
+				- this could work with branch
+
+		[ ] List out limitations
+
+
+
+	1.15
+
+		colab tips very simlar to what nbx functionality / needs
+		https://colab.research.google.com/notebooks/snippets/advanced_outputs.ipynb#scrollTo=MprPsZJa3AQF
+
+	1.8
+		How to reset state? When would this be nec?
+			->just delete .cpr/cells.json and pull/push.
+				- if pushed by student, can't be pulled by teacher, right?
+
+		Mainly, I need to:
+		- troubleshoot first try bug
+		- test with Teng
+		- build compelling example
+		- test with small group
+		- test with class
+
+	[ ] First answer problems
+		- always on nb reload correct?
+
+	[ ] Try on github personally
+	
+	[ ] Test with Teng, how to prepare script
+		teacher -> student
+		[ ] couple easy answers:
+			- first try success?
+			- is scroll down working?
+		[ ] multimedia plots
+		[ ] big answers, loaded text
+			- timing works?
+		reset scripts
+		[ ] delete .cells.json and push/pull
+
+
+	
+	1.7
+		Random thought on git (in general):
+			merges should be easy when we don't care about losing history, right? we're just creating a "new object" on push
+
+	1.6
+
+	+ what can be done before a new architecture is found?
+		  There's problems doing many tests, no? Or is this just defeatist attitude?
+			  - it's true that intellisense/debugging and general code editing experience is
+				  degraded via the current implementation
+				- but almost all unit tests should still work
+
+	+ what else can be done:
+		- testing
+		- packaging
+		- demonstrations
+		- extra functionality: e.g. git_root, clear_commit, etc...
+
+	+ some other questions:
+		- which function uses timeouts? does this change when 
+
 
 	12.31
 	
@@ -58,9 +92,12 @@ Todo:
 		- major things holding us away from v0.1
 			[ ] little details like notebook could be in a dir, find_git_root, etc
 			[ ] api specified with options
+				[ ] how to 
+				[ ] mulitple send answers
 		 - other important things:
 		    [ ] don't search for cell input term, use cell selection index
 			[ ] setTimeout's in nbx2.get_answer()
+			[ ] clear-send_answer() what if student accidentilly does send_answer()? and wants to back out of that.
 	
 	12.29
 		[x] get a commit in with new hack
