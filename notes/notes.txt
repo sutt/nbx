@@ -5,10 +5,136 @@ Overview / Main Points
 		
 		 - pair programming without the clunkiness of working on someone's computer.
 		
-		 - deliverable: a repo ready to go where you can "play against someone" e.g. it will have some leetcode challenges.
-		
 Todo:
 -------------------------
+
+	1.18
+
+		[x] build screencast
+			[x] with ppt?
+			[~] with zoom?
+			[~] how to edit?
+			[x] how to make a gif?
+				https://lifehacker.com/the-complete-guide-to-making-animated-gifs-1503276993
+				https://giphy.com/create/gifmaker
+				https://image.online-convert.com/convert-to-gif
+
+		[x] build reademe
+			[x] embed gif?
+
+		[ ] start building docs
+			[ ] faq for troubleshooting
+			[ ] quickstart
+				- don't forget to save
+			[ ] explanation of what's happening
+
+		[ ] start building tests
+			- one main selenium one
+			- use a local remote
+
+		misc:
+		[ ]	verbose option for debugging
+		[ ] send/receive multiple answers
+		[ ] receive answer answer before latest
+		[ ] receive answer from specifc user
+		[ ] receive answer from all submissions
+
+		cleaning / admin
+		[ ] better doc strings for nbx functions
+		[ ] refactor cpr to nbx
+			[ ] eg. root directory
+		[ ] remove other code completes
+		[ ] clean up code, remove un nec modules
+			[ ] ipython_block in cpr/
+			[ ] 
+		[ ] switch git repo to nbx
+
+		
+		submission feature:
+			.nbx/<git user.name>.json with your name
+			
+			[ ] cells.json -> master.json (according to master branch)
+			[ ] check_output to git config get user.name for submitted answers
+			[ ] receive answer from specifc user
+			[ ] receive answer from all submissions
+
+		3 use cases:
+		 - master broadcast/multi-client-listen flow
+		 - two way exchange with one master, and multi-client
+		 - pair programming / group programming
+
+	1.17
+
+		rehearse presentation:
+					
+					+ https://github.com/sutt/nbx-demo-1
+
+					+ insturctions for solver:
+						- launch jupyter in root of clone repo. (nec?)
+						- make sure to save after the first receive_answer()
+
+					+ don't forget to CTRL+S 
+							- BEFORE RUNNING send_answer but,
+							+ AFTER TYPING send_answer
+
+					+ reset ws:
+					  >git rm -rf .cells
+						>git commit -m "reset ws"
+						>git push
+					  reclone:
+						 - have to shut down jupyter notebook in the dir to delete the dir; or just take cmd out of that dir
+						 >git clone https://github.com/sutt/nbx-demo-1 demo-1-teacher
+
+
+				- what's next?
+					- prezi for who?
+
+
+		further on:
+
+			- we could build two demos: demo-1: two player, demo-2: self play like i do
+			- can add a more advanced demo with explainers
+
+			[ ] screenshot gif
+
+			[ ] add readme to nbx-demo-1
+
+			[ ] verbose option, to display some debugging info if it doesn't work at first
+			
+			[ ] add last-save reminder functionality
+				- check file modified time vs current system time.
+
+			[ ] could add a sys.stdout redirect in import class to log errors
+				- this only needed for the nbx2 version
+			
+			[ ] what if send_anser hangs? timeout?
+
+			[ ] test with untrusted
+					[ ] how to create untrusted?
+					[ ] for send
+					[ ] for receive
+					[ ] status following git clone?
+
+			[ ] what is the diff of functionality b/w nbx and nbx2?
+				- nbx requires at least one arg (possibly false if only 1 notebook?)
+				- nbx2 can save before actions
+				- nbx2 can conceivably solve latent bugs easily by passing into the kernel relevant data like nb_name, nb_path, cell index
+					-> these solve or ameliorate many hacks and user-demands created by python kernel being ignorant about notebook's current DOM state or filesystem state.
+
+		[ ] List out limitations
+				- searches for string to find answer; e.g. answer inserted at bottom with second receive_answer()
+				- no bottom cell padding bug (?)
+				- nbx2.get_answer autocompletes; hide that method and others (import module instead?)
+				- notebook must be at root of git repo
+				- can only send one anwser at a time
+				- first try bug? -> hasn't surfaced yet
+				- file access conflict when autosave occurs at same time (?)
+				- can only get most recent answer
+				- can only work with jupyter run from repos root (?) (unless nb path passed in)
+
+
+
+
 
 	1.16
 
@@ -83,73 +209,6 @@ Todo:
 
 			11:30 - 12:00 wrap:
 				
-				rehearse presentation:
-					
-					+ https://github.com/sutt/nbx-demo-1
-
-					+ insturctions for solver:
-						- launch jupyter in root of clone repo. (nec?)
-						- make sure to save after the first receive_answer()
-
-					+ don't forget to CTRL+S 
-							- BEFORE RUNNING send_answer but,
-							+ AFTER TYPING send_answer
-
-					+ reset ws:
-					  >git rm -rf .cells
-						>git commit -m "reset ws"
-						>git push
-					  reclone:
-						 - have to shut down jupyter notebook in the dir to delete the dir; or just take cmd out of that dir
-						 >git clone https://github.com/sutt/nbx-demo-1 demo-1-teacher
-
-
-				- what's next?
-					- prezi for who?
-
-
-			further on:
-
-			- we could build two demos: demo-1: two player, demo-2: self play like i do
-			- can add a more advanced demo
-
-			[ ] add readme to nbx-demo-1
-
-			[ ] verbose option, to display some debugging info if it doesn't work at first
-			
-			[ ] add last-save reminder functionality
-				- check file modified time vs current system time.
-
-			[ ] could add a sys.stdout redirect in import class to log errors
-				- this only needed for the nbx2 version
-			
-			[ ] what if send_anser hangs? timeout?
-
-			[ ] test with untrusted
-					[ ] how to create untrusted?
-					[ ] for send
-					[ ] for receive
-					[ ] status following git clone?
-
-			[ ] what is the diff of functionality b/w nbx and nbx2?
-				- nbx requires at least one arg (possibly false if only 1 notebook?)
-				- nbx2 can save before actions
-				- nbx2 can conceivably solve latent bugs easily by passing into the kernel relevant data like nb_name, nb_path, cell index
-					-> these solve or ameliorate many hacks and user-demands created by python kernel being ignorant about notebook's current DOM state or filesystem state.
-
-		[ ] List out limitations
-				- searches for string to find answer; e.g. answer inserted at bottom with second receive_answer()
-				- no bottom cell padding bug (?)
-				- nbx2.get_answer autocompletes; hide that method and others (import module instead?)
-				- notebook must be at root of git repo
-				- can only send one anwser at a time
-				- first try bug? -> hasn't surfaced yet
-				- file access conflict when autosave occurs at same time (?)
-				- can only get most recent answer
-				- can only work with jupyter run from repos root (?) (unless nb path passed in)
-
-
-
 
 
 	1.15
