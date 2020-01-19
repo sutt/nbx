@@ -1,11 +1,11 @@
 # `nbx` - Notebook Exchange
 Collaborate by passing cells between notebooks on different machines.
 
-  - No git merge issues on notebooks
+  - No git merge issues on notebooks.
   
-  - Does not disrupt active kernel; 
+  - Does not disrupt active kernel.
   
-  - No custom server or config required; 
+  - No custom server or config required.
 
 ##### The two notebooks represent notebooks on different machines.
 <img src='./docs/assets/quick-graph-2.gif'/>
@@ -28,28 +28,44 @@ Collaborate by passing cells between notebooks on different machines.
 
    6. Have the collaborator type `nbx.receive_answer()` in the cell below where they want the answer. The collaborator saves their notebook (with ctrl+s) and then runs the receive_answer cell. In 1-5 seconds, a new cell- the answer cell - will appear in the notebook.
 
+---------------------------------------------
+
 ### Further explanation
 
-    TODO
+  - **No git merge issues on notebooks:**
+   Instead of trying to merge two notebooks which is difficult because .ipynb's are json formatted, and each machine will have different meta-data in that json, we don't use git merge. Instead:
+    - *to send an answer* we isolate the answer cell and append the data from the input and output attributes into with `.cpr/cell.json` in the root of the git repo. We then git push only the `.cpr` directory. 
+    - *to receive an answer*  we pull the `.cpr` directory and insert the last cell into our notebook's .ipynb file, then reload the DOM to show the new cell.
+    
+
+  - **Does not disrupt active kernel:** The notebook's DOM representation and .ipynb representation will be changed but this does not affect "what python knows". You need to run the received cell for any new variables to be added or set.
+    - Accepting an answer does not actually run the cell into your kernel, even though the output of it displays. For example if you were sent a cell with a new variable, the receiver has to run the received cell to be able to use the new variable.
+
+  
+  - **No custom server or config required:** No need to setup another account, or spin up a server, as long as you have push and pull access ot a git repository, you'll be able to collaborate via nbx.
+    - But you will need to be able to push/pull from the git server without typing in your password.
+   
+
 ---------------------------------------------
 ### Troubleshooting + FAQ
 
-##### I wasn't able to receive an answer:
-   - must save notebook (ctrl+s) *after* you type `receive_answer` but *before* you execute it.
+  - **I wasn't able to receive an answer:**
+    - must save notebook (ctrl+s) *after* you type `receive_answer` but *before* you execute it.
 
-##### The answer cell appeared but in the wrong place:
+  - **The answer cell appeared but in the wrong place:**
    - if saving the notebook correctly doesn't work...
    - make sure no other cells in your notebook contain the string `receive_answer`.
 
-##### Some of my exisiting code went away after receiving an answer:
+  - **Some of my exisiting code went away after receiving an answer:**
    - must manaully save notebook (ctrl+s) before you type `receive_answer` otherwise the existing code won't be saved.
   
-##### Sending an answer sent the wrong answer cell:
+  - **Sending an answer sent the wrong answer cell:**
    - run send_answer() in the cell directly below the one you want to send. 
    - save the notebook *after* you type send_answer but before you run it.
     
-#####  Still not working
-   - Can you push/pull from this remote without having to enter your password? if not, it won't work
+  - **Still not working:**
+   - Can you push/pull from this remote without having to enter your password? if not, it won't work.
+   - See *Limitations* section below for other things that may violate the nbx assumptions.
 
 ---------------------------------------------
 ### Limitations
@@ -66,7 +82,7 @@ Collaborate by passing cells between notebooks on different machines.
 
  - Can only receive most recent answer.
 
- - Must hit save before running send_answer or receive_answer
+ - Must hit save before running send_answer or receive_answer.
 
  - Can only have one cell with input code `send_answer` or `receive_answer`, otherwise the answer may be inserted in the wrong place.
 
