@@ -8,6 +8,10 @@ Overview / Main Points
 Todo:
 -------------------------
 
+	1.19
+		
+		[ ] fix error message for send_answer to reminder about saving
+
 	1.18
 
 		[x] build screencast
@@ -19,8 +23,10 @@ Todo:
 				https://giphy.com/create/gifmaker
 				https://image.online-convert.com/convert-to-gif
 
-		[x] build reademe
+		[x] build reademe for cpr-dev
 			[x] embed gif?
+
+		[ ] readme for nbx-demo-1
 
 		[ ] start building docs
 			[ ] faq for troubleshooting
@@ -126,6 +132,7 @@ Todo:
 				- no bottom cell padding bug (?)
 				- nbx2.get_answer autocompletes; hide that method and others (import module instead?)
 				- notebook must be at root of git repo
+				- must run jupyter notebook at root (?)
 				- can only send one anwser at a time
 				- first try bug? -> hasn't surfaced yet
 				- file access conflict when autosave occurs at same time (?)
