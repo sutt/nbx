@@ -9,8 +9,45 @@ Todo:
 -------------------------
 
 	1.19
+
 		
-		[ ] fix error message for send_answer to reminder about saving
+		[x] refactoring
+			[x] .cpr -> .nbx
+			[x] cells.json -> master.json
+			[x] cpr/ -> nbx/ (git mv)
+			[x] cpr.py -> frontend.py
+			[x] clean up misc code
+				[x] nbx.py header
+			[x] remove misc functions
+			[x] ipython blocking remove
+			[x] all 'local' to origin
+			[~] my local directory: cpr -> nbx
+			[x] test locally
+		
+		[ ] updating from the refactor
+			[ ]	push new nbx module into nbx-demo-1
+			[ ] redo the gif
+					[ ] instead of using the full puzzles nb, use 
+							"Receive answers here"
+			[ ] redo docs where nec. eg. import cpr -> import nbx
+				[ ] Further explanaition section etc
+
+
+		user-experience stuff
+		[x] fix error message for send_answer to reminder about saving
+			[ ] verify
+		[ ] better error message if no answer is present
+		[ ] add error message to common errors:
+			"if you believe this is untrue, run with debug=True to get a full stack trace"
+		[ ] b_save in nbx is erroneous			
+		[ ] better doc strings for nbx methods
+		[ ] get rid of confusing names
+		[ ] add debug options:
+			we want to print to user's notebook instead of raising an exception (which bring a long stacktrace) when it's likely/possible that user error is involved. Otherwise still raise the exception
+		
+
+		[ ] does this only work b/c master.json is one line? 
+			if we pretty printed the json would this create merge problems?
 
 	1.18
 
@@ -101,7 +138,7 @@ Todo:
 			- we could build two demos: demo-1: two player, demo-2: self play like i do
 			- can add a more advanced demo with explainers
 
-			[ ] screenshot gif
+			[x] screenshot gif
 
 			[ ] add readme to nbx-demo-1
 
@@ -138,6 +175,8 @@ Todo:
 				- file access conflict when autosave occurs at same time (?)
 				- can only get most recent answer
 				- can only work with jupyter run from repos root (?) (unless nb path passed in)
+				- relies on github auth, how can you check / correct that if it doesn't work?
+					- have an input field to enter password?
 
 
 
