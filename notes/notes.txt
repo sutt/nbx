@@ -3,10 +3,61 @@ Overview / Main Points
 ------------------------	
 		nbx - notebook exchange
 		
-		 - pair programming without the clunkiness of working on someone's computer.
+		 - pair programming without the clunkiness of working on someone else's computer.
 		
 Todo:
 -------------------------
+
+	2.7
+
+	1.31
+
+		how to add push rights to everyone on git automatically?
+
+	1.20
+
+		below, we satisfy the introspection / debugging / error reporting problems of nbx2 architecture, but we still can't deal with the timing problems, that can only be helped by well written js
+
+		nbx2 debugging:
+			- because calling python from js 
+			- send stdout / stderr to a log file in .nbx dir
+			- psuedo code for receive_answer()
+
+					nbx_js.py:
+					import sys
+					sys.stdout.to('.nbx/debug.txt')
+
+					def pull_answer()
+						gitcomm.pull_answer() # now this prints to log even 
+
+					nbx2.py:
+					def receive_answer():
+						
+						with open('.nbx/debug.txt') as f:
+							f.write('starting reeive_answer)
+
+						js = '''
+						
+						...
+						
+						IPython.kernel.execute("nbx_js.pull_answer()");
+						
+						...
+
+						// also we can log to console for err reporting with js methods
+						console.log(my_err);
+
+						'''
+
+						IPython.display(Javascript(js))
+
+						# actually this will run before the js is exececuted,
+						# so we'll need to call the err reporting in a separate
+						# subsequent cell
+
+						with open('.nbx/debug.txt') as f:
+							if 'Error' in f.read():
+								print(f.read())  # can show user what happend in js-executed python
 
 	1.19
 

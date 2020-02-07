@@ -34,12 +34,12 @@ Collaborate by passing cells between notebooks on different machines.
 
   - **No git merge issues on notebooks:**
    Instead of trying to merge two notebooks which is difficult because .ipynb's are json formatted, and each machine will have different meta-data in that json, we don't use git merge. Instead:
-    - *to send an answer* we isolate the answer cell and append the data from the input and output attributes into with `.cpr/cell.json` in the root of the git repo. We then git push only the `.cpr` directory. 
-    - *to receive an answer*  we pull the `.cpr` directory and insert the last cell into our notebook's .ipynb file, then reload the DOM to show the new cell.
+    - *to send an answer* we isolate the answer cell and append the data from the input and output attributes into with `.nbx/master.json` in the root of the git repo. We then git push only the `.nbx` directory. 
+    - *to receive an answer*  we pull the `.nbx` directory and insert the last cell into our notebook's .ipynb file, then reload the DOM to show the new cell.
     
 
   - **Does not disrupt active kernel:** The notebook's DOM representation and .ipynb representation will be changed but this does not affect "what python knows". You need to run the received cell for any new variables to be added or set.
-    - Accepting an answer does not actually run the cell into your kernel, even though the output of it displays. For example if you were sent a cell with a new variable, the receiver has to run the received cell to be able to use the new variable.
+    - Accepting an answer does not actually run the cell into your kernel, even though the output of it displays. For example if you received a cell with where a new variable was created, you would have to run that received cell to be able to use the new variable elsewhere in your code.
 
   
   - **No custom server or config required:** No need to setup another account, or spin up a server, as long as you have push and pull access ot a git repository, you'll be able to collaborate via nbx.
@@ -53,19 +53,19 @@ Collaborate by passing cells between notebooks on different machines.
     - must save notebook (ctrl+s) *after* you type `receive_answer` but *before* you execute it.
 
   - **The answer cell appeared but in the wrong place:**
-   - if saving the notebook correctly doesn't work...
-   - make sure no other cells in your notebook contain the string `receive_answer`.
+    - if saving the notebook correctly doesn't work...
+    - make sure no other cells in your notebook contain the string `receive_answer`.
 
   - **Some of my exisiting code went away after receiving an answer:**
-   - must manaully save notebook (ctrl+s) before you type `receive_answer` otherwise the existing code won't be saved.
+    - must manaully save notebook (ctrl+s) before you type `receive_answer` otherwise the existing code won't be saved.
   
   - **Sending an answer sent the wrong answer cell:**
-   - run send_answer() in the cell directly below the one you want to send. 
-   - save the notebook *after* you type send_answer but before you run it.
+    - run send_answer() in the cell directly below the one you want to send. 
+    - save the notebook *after* you type send_answer but before you run it.
     
   - **Still not working:**
-   - Can you push/pull from this remote without having to enter your password? if not, it won't work.
-   - See *Limitations* section below for other things that may violate the nbx assumptions.
+    - Can you push/pull from this remote without having to enter your password? if not, it won't work.
+    - See *Limitations* section below for other things that may violate the nbx assumptions.
 
 ---------------------------------------------
 ### Limitations
