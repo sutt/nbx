@@ -8,7 +8,7 @@ Collaborate by passing cells between notebooks on different machines.
   - No custom server or config required.
 
 ##### The two notebooks represent notebooks on different machines.
-<img src='./docs/assets/quick-graph-2.gif'/>
+<img src='./docs/assets/nbx-gif-1.gif'/>
 
 **above:** on the left, we type in the answer (code for a histogram) and run the cell. Now we want to send it to the machine on the right. We use `send_answer()` in the cell below to send it to the git remote. On the right, we want to get that answer so we run `receive_answer()` and then the answer appears in the notebook.
 
