@@ -1,3 +1,38 @@
+4.12
+
+[x] build staging utility to setup  [TODO-1]
+    
+    [x] copy in example
+        [x] strip contents
+        [x] remove history
+
+    [x] bash script which creates
+        [~] pass in arguments
+        [~] destination vs source arguments 
+            (relative to script location or calling location?)
+        [~] can remote paths be relative? 
+            - if not: must script git remote set-url 
+            - this will hard code in absolute path to current dev position
+                - or can parse the path (via $pwd) and append to it
+
+[ ] build example unit test [TODO-2]
+    [ ] use stage_scripts to stand it up / reset it
+    [ ] pytest?
+    [ ] what compenets can we test first? (w/o js support)
+
+[ ] add optionality to staging [TODO-3]
+    [ ] extra history
+    [ ] exisiting .nbx folder
+    [ ] github functionality
+
+
+[ ] build example integration test [TODO-4]
+    [ ] use subprocess to launch 
+    [ ] use selenium to script the notebook
+
+[ ] make pip package [TODO-6]
+    [ ] include tests optionally
+
 4.11
 
 [x] nbx2.receive_answer() doesnt git pull (sometimes) [#1]

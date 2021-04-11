@@ -14,7 +14,7 @@ Todo:
 			[x] does it solve the save before on teacher-side? -> yes
 			[x] on the student side? -> no: it it doens't run git pull
 		[x] fix the git pull bug on nbx2
-		[ ] get remote=local working
+		[x] get remote=local working
 		[ ] what is the debugging notes all about?
 			- stdin / stdout from subprocess appears in console that launched jupyter
 		
@@ -28,7 +28,16 @@ Todo:
 				- some minor bugs on receive_answer()
 				- not very legible hiow control flow works
 		[ ] can we use the gh package?
+		[ ] does jupyter use react?
 
+		feature dump:
+			- support notebooks outside root of git
+			- support notebooks outside root of jupyter
+
+		test dump:
+			- multiple example of receive_answer()
+			- long notebooks
+			- lots of data in notebook
 	2.7
 
 	1.31
