@@ -13,12 +13,20 @@ Todo:
 		[x] demo nbx2
 			[x] does it solve the save before on teacher-side? -> yes
 			[x] on the student side? -> no: it it doens't run git pull
-		[ ] fix the git pull bug on nbx2
+		[x] fix the git pull bug on nbx2
+		[ ] get remote=local working
 		[ ] what is the debugging notes all about?
+			- stdin / stdout from subprocess appears in console that launched jupyter
+		
+		[x] turn off jupyter notebook editor, view raw ipynb:
+			->"python.dataScience.useNotebookEditor": false,
+		[~] git diff without indentation -> just set the formatting the same manually
 
 		misc
-		[ ] what is the state of nbx2?
-		[ ] how do i use a local remote?
+		[x] what is the state of nbx2? 
+			-> pretty good:
+				- some minor bugs on receive_answer()
+				- not very legible hiow control flow works
 		[ ] can we use the gh package?
 
 	2.7

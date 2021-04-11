@@ -1,0 +1,161 @@
+4.11
+
+[x] nbx2.receive_answer() doesnt git pull (sometimes) [#1]
+    [x] it does autosave
+    [x] ImportClass? why do we do that? 
+        -> it's a trick to execute the code in a simpler way
+    [x] it does work on nbx.receive_answer()
+    [x] why does it work on nbx?
+        - does output on a print statement on nbx.receive_answer()
+    [x] console.logging
+        - notice that stdout subprocess runs show up in terminal running jupyter notebook
+    [x] changing ImportClass.gitcomm_get_answer(remote='origin')
+        - works sometimes?
+    [x] verify git log always populates with this command
+        - 3/3
+    -> Closing, appears to work after switching remote=origin to default parameter
+
+
+[x] nbx2.receive_answer() doesnt work without a blank cell above? [#2]
+    -> resolved with multiple issues handled, mainly about setting a callback for after:
+        python kernel exectures merge_cell
+        to *then* call notebook reload (and then flash is call after)
+
+        the solution eleiminated the need to do setTimeout for notebook reload
+
+    [x] may be related to #3 -> prolly not
+    [x] try w/w/o blank cell 3x
+        -> works
+    [x] looks like the problem is finding the index of the cell calling receive_answer:
+        In[5]: #aa
+        In[6]: nbx2.receiver_anser()       <- running this cell
+        In[7]: #bb                         
+        In[8]: #cc                         <- cell insert here
+        In[8]: #nbx2.reveive_answer()
+
+        -> but In[6] will get highlighted and scrolled to
+
+    [!] might be finding the cell index problem
+
+    [x] test 3x-push/pull without secondary target
+        -> fails.
+    [x] test 3x-push/pull hypothesis: writing to ipynb works, something like reload / timing is wrong
+        -> confirmed
+    [x] change timing to see if it's timing:
+        from: setTimeout(loadFunc, 500); setTimeout(basicFunc, 700);
+        
+        to:   setTimeout(loadFunc, 500); setTimeout(basicFunc, 1700);
+            -> breaks
+
+        to:   setTimeout(loadFunc, 1500); setTimeout(basicFunc,2700);
+            -> breaks
+    
+    [x] watch logging with big time gap:
+    
+        to:   setTimeout(loadFunc, 10000); setTimeout(basicFunc,15000);
+            -> works:
+        
+        immediately to console:
+                    ra: 0th
+            VM567:7 ra: 2nd
+            VM567:21 nbx2.ImportClass.gitcomm_pull_answer()
+            VM567:26 nbx2.ImportClass.merge_get_answer("puzzles.ipynb")
+            VM567:47 after load
+            VM567:75 done with theRest()
+
+        to:   setTimeout(loadFunc, 5000); setTimeout(basicFunc,5500);
+            -> works
+            -> it's not about basicFunction (flashing/scrolling)
+            -> so it's all about timing of loadFunc
+                - this is supported by the idea that the ipynb contains the insertion even when it doesnt appear in browser
+            -> can we verify it's git_pull or merge that is off?
+
+    [ ] how can we make preceeding functions blocking?
+        - an issue here is that the preceeding commands call to python kernel...
+            via IPython.notebook.kernel.execute(py_cmd)
+                and these immediately return a guid
+                    so this function will quickly resolve
+        - this should OK for making git_pull resolve before cell_merge is run as python kernel GIL will block
+        - a fix is to call into python kernel via js to see if it finished merge
+            [ ] how do we access python kernel values in js?
+        - survey of kernel methods/props:
+            
+            IPython.notebook.kernel.last_msg_id 
+                -> returns guid froma call to kernel
+
+            IPython.notebook.kernel._msg_callbacks
+
+            IPython.notebook.kernel.last_msg_callbacks.shell_done
+                -> false while waiting
+                - but we cant get our own kernel.execute(s, cb) js calls to get into the callback pool
+                    - nor can we even get a callback to run
+                
+                src-docs:
+                https://github.com/jupyter/notebook/blob/bc28d6123117c3c733697e27e9d4bd71d7f0c46b/notebook/static/services/kernels/kernel.js
+
+                sut_callbacks = {shell:{reply: () => console.log("why reply")}}
+                IPython.notebook.kernel.execute("time.sleep(10)",sut_callbacks)
+
+               mr_callbacks = {
+                shell : {
+                  reply : execute_reply_callback,
+                  payload : {
+                    set_next_input : set_next_input_callback,
+                  }
+                },
+                iopub : {
+                  output : output_callback,
+                  clear_output : clear_output_callback,
+                },
+                input : raw_input_callback
+               }
+
+
+
+[ ] nbx2.receive_answer() triggers notebook state conflict [#3]
+    [ ] may be related to #2
+        -> this should work once #2 is fixed b/c the browser's state and ipynb representation should match
+            - possibly not without pretty formatting
+        -> but it's still important to understand the built-in switch
+            for "race condition" type areas
+    
+    [x] steps to reporduce:
+        1. receive a new answer (freshly pushed)
+        2. the received answer doesn't display in browser
+        3. hit notebook save
+            -> this occurs b/c git_pull + merge have occured and put the new cell into the ipynb, 
+                while the browser hasn't loaded this new ipynb
+
+        dev tools message:
+        react_devtools_backend.js:2430 Last saving was done on `Sun Apr 11 2021 10:27:05 GMT-0400 (Eastern Daylight Time)`(load-success:2021-04-11T14:27:05.641604Z), while the current file seem to have been saved on `2021-04-11T14:27:06.360901Z`
+
+            - comes between `ra 0th` and `ra 2nd` messages
+
+        The notebook file has changed on disk since the last time we opened or saved it. Do you want to overwrite the file on disk with the version open here, or load the version on disk (reload the page)?
+            
+            -> options: Overwrite | Cancel | Reload
+
+    [ ] appears related to pretty print formatting of the json
+        [ ] account for formatting type in each state:
+            [ ] initially created notebook
+            [ ] save notebook with new cell
+            [ ] receive_answer notebook
+
+    [x] a way to view a diff on conflicting notebooks:
+        -message pops up:
+        >cp nb.ipynb old.nb.ipynb
+        -click overwrite
+        >git diff --no-index old.nb.ipynb nb.ipynb
+        -but this will be deceiving...wrong pretty print and wrong indentation cause issues:
+            - instead we'll set them up to use the same formatting:
+            >cp old.nb.ipynb old.nb.json
+            >cp nb.ipynb new.nb.json
+            - open both in vscode > command pallete > format document > save as:
+                old.formatted.nb.json, new.formatted.nb.json  (respectively)
+            >git diff --no-index old.formatted.nb.json new.formatted.nb.json
+
+    [x] a proper diff reveals there's only one cell difference in the notebook
+        -> to fix we'll probably need to:
+        a.) match the notebook formatting style, or(?)
+        b.) turn off the check that runs that message?
+            
