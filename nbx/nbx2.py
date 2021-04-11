@@ -46,8 +46,8 @@ class ImportClass:
 
     @staticmethod
     def gitcomm_pull_answer():
-        pull_answer(remote_name='local', 
-                b_log=False,
+        pull_answer(remote_name='origin', 
+                b_log=True,
                 )
     
     @staticmethod
@@ -76,18 +76,29 @@ def receive_answer( debug=False,):
     '''
 
     js = '''
+    console.log("ra: 0th")
     Promise.resolve(
+        // console.log("ra: 1st")
         IPython.notebook.save_notebook(true)
         ).then(function(){
+            console.log("ra: 2nd")
             return theFinal();
             }
         ).then(function(){
-            return theRest();
+            // return theRest();
         });
 
     function theFinal() {
         
         var nb_name = IPython.notebook.notebook_name;
+        const t0 = new Date().getTime()
+
+        const simple_cb = {shell:{reply: () => {
+                const t1 = new Date().getTime()
+                console.log("merge() has finished! time in ms: " + (t1 - t0))
+                theRest()
+            }
+            }}
         
         var py_cmd = '';
         py_cmd += 'nbx2.ImportClass.gitcomm_pull_answer()';
@@ -96,7 +107,7 @@ def receive_answer( debug=False,):
 
         var py_cmd = '';
         py_cmd += 'nbx2.ImportClass.merge_get_answer("' + nb_name + '")';
-        IPython.notebook.kernel.execute(py_cmd);
+        IPython.notebook.kernel.execute(py_cmd, simple_cb);
         console.log(py_cmd);
 
         }
@@ -114,13 +125,17 @@ def receive_answer( debug=False,):
     var b_flash = true;
 
     
-    setTimeout(loadFunc, 500);
+    // setTimeout(loadFunc, 5000);
+    loadFunc()
+
     function loadFunc() {
-    IPython.notebook.load_notebook(nb_path);
+        IPython.notebook.load_notebook(nb_path);
+        console.log("loadFunc() has run")
     }
     if (b_log) {console.log('after load');}
     
-    setTimeout(basicFunc, 700);
+    setTimeout(basicFunc, 300);  // still needs a delay to allow the reload to finish; could move to cb architecutre later
+    // basicFunc()
     function basicFunc() {
         
         console.log('in basicFunc');   
