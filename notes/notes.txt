@@ -8,6 +8,19 @@ Overview / Main Points
 Todo:
 -------------------------
 
+	4.7
+		[x] do a demo
+		[x] demo nbx2
+			[x] does it solve the save before on teacher-side? -> yes
+			[x] on the student side? -> no: it it doens't run git pull
+		[ ] fix the git pull bug on nbx2
+		[ ] what is the debugging notes all about?
+
+		misc
+		[ ] what is the state of nbx2?
+		[ ] how do i use a local remote?
+		[ ] can we use the gh package?
+
 	2.7
 
 	1.31
