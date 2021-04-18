@@ -15,10 +15,22 @@
             - this will hard code in absolute path to current dev position
                 - or can parse the path (via $pwd) and append to it
 
-[ ] build example unit test [TODO-2]
-    [ ] use stage_scripts to stand it up / reset it
-    [ ] pytest?
-    [ ] what compenets can we test first? (w/o js support)
+[x] build example unit test [TODO-2]
+    [x] use stage_scripts to stand it up / reset it
+    [x] pytest?
+    [x] what compenets can we test first? (w/o js support)
+
+    do a test of nbx.merge.give_answer
+        [x] setup pytest
+        [~] question: when we chdir and a test fails, how do we get back to the original dir?
+            -> don't delete if test fails
+            -> can build a new test_stages-GUID each time we run, and delete the old
+            -> need to remove all terminals from pointing into that dir you want to delete
+
+[ ] feature: index of cell to send via js (instead of parsing ipynb)
+    [ ] merge.give_answer needs parameter for this
+    [ ] find send cell index from js
+    [ ] write a test that fails for old way, works for new way
 
 [ ] add optionality to staging [TODO-3]
     [ ] extra history
