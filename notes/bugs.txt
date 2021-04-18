@@ -32,6 +32,9 @@
 
 [ ] make pip package [TODO-6]
     [ ] include tests optionally
+    [ ] virtualenv + requirement.txt
+        [ ] jupyter version min + max
+    [ ] setup.py
 
 4.11
 

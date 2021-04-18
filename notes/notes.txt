@@ -8,6 +8,82 @@ Overview / Main Points
 Todo:
 -------------------------
 
+	4.16
+		[x] build a user-setup.bat
+			[x] rename
+			[x] set ports
+		
+		[x] build a test setup
+			[x] list of features:
+				- no token
+				- don't open page automatically
+				- (in selenium: head directly to url .../book1.ipynb (instead of /home))
+				
+			flags:
+				https://stackoverflow.com/questions/41159797/how-to-disable-password-request-for-a-jupyter-notebook-session
+				--no-browser
+				--NotebookApp.token=''
+				--NotebookApp.password=''
+				--port=9000
+
+				jupyter notebook --no-browser --NotebookApp.token='' --NotebookApp.password='' --port=9000
+
+		[x] make a virtualenv
+			
+			-> python3 -m virtualenv venv1
+
+			all nec. to install jupyter:
+			zipp, typing-extensions, ipython-genutils, traitlets, six, pywin32, pyrsistent, importlib-metadata, attrs, wcwidth, tornado, pyzmq, python-dateutil, pyparsing, parso, jupyter-core, jsonschema, webencodings, pygments, pycparser, prompt-toolkit, pickleshare, packaging, nest-asyncio, nbformat, MarkupSafe, jupyter-client, jedi, decorator, colorama, backcall, async-generator, testpath, pywinpty, pandocfilters, nbclient, mistune, jupyterlab-pygments, jinja2, ipython, entrypoints, defusedxml, cffi, bleach, terminado, Send2Trash, prometheus-client, nbconvert, ipykernel, argon2-cffi, notebook, widgetsnbextension, qtpy, jupyterlab-widgets, qtconsole, jupyter-console, ipywidgets, jupyter
+
+		[x] build a testing environment
+			venvtest1
+			
+			extras:
+				-pytest
+				-selenium
+
+		[x] get selenium
+			
+			got chrome driver for v90
+			https://sites.google.com/a/chromium.org/chromedriver/downloads
+			https://www.browserstack.com/docs/automate/selenium/getting-started/python#run-your-first-test				
+
+				https://chromedriver.chromium.org/getting-started
+
+			[x] do an example
+				[x] how to get the kernel jupyter's path?
+					many suggestions:
+					https://stackoverflow.com/questions/37891550/jupyter-notebook-running-kernel-in-different-env
+
+					from the docs:
+					https://ipython.readthedocs.io/en/stable/install/kernel_install.html#kernels-for-different-environments
+
+						points to kernel files:
+						https://jupyter-client.readthedocs.io/en/latest/kernels.html#kernelspecs
+
+					this worked:
+					(venvtest1) C:\Users\wsutt\Desktop\files\nbx\venvs\venvtest1\Scripts>
+					>python -m ipykernel install --user --name venvtest1 --display-name "py3 nbx test venv"
+					output: Installed kernelspec venvtest1 in C:\Users\wsutt\AppData\Roaming\jupyter\kernels\venvtest1
+
+				-> see stage/2/teacher/demo-selenium.ipynb
+
+		[x] make requirements
+			x ] for each venv
+
+		[x] stage + do a commit
+			[x] gitignore venv folder's but not requirements
+			[x] copy the setup scripts from stage/1 -> stage_utils/bare
+			[~] how to include the staging repos?
+				-> one possibility is with git init script (b/c there is no .git folder yet)
+					-> this could even be controlled with renaming the .git folder
+		
+		[ ] build a new stage template + script where we git init instead of using exising one
+
+	thought dump:
+		- what happens when student of teacher commits the notebook itself
+		- need to support outside the root (of both git-repo and nb-server-cwd)
+
 	4.7
 		[x] do a demo
 		[x] demo nbx2
