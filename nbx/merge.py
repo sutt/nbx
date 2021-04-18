@@ -72,7 +72,7 @@ def insert_cell(cell_index,
     return new_json
 
 
-def give_answer(fn_nb, term='give_answer('):
+def give_answer(fn_nb, term=None, cell_index=None):
     '''
         append cell above onto answers
     '''
@@ -86,8 +86,11 @@ def give_answer(fn_nb, term='give_answer('):
             nb_json = json.load(f)
     except Exception as e:
             raise Exception(f'''unable to read current notebook; encoding err? {e}''')
-
-    nb_index = find_answer_index(nb_json['cells'], term=term)
+    
+    if term is not None:
+        nb_index = find_answer_index(nb_json['cells'], term=term)
+    else:
+        nb_index = cell_index
     
     nb_cell = nb_json['cells'][nb_index - 1]   # take cell above
 

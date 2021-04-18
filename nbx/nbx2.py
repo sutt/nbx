@@ -37,8 +37,10 @@ class ImportClass:
         pass
 
     @staticmethod
-    def merge_give_answer(fn_nb):
-        give_answer(fn_nb=fn_nb,term='send_answer')
+    def merge_give_answer(fn_nb, cell_index=None):
+        give_answer(fn_nb=fn_nb,
+                    cell_index=cell_index
+                    )
 
     @staticmethod
     def gitcomm_push_answer():
@@ -187,7 +189,6 @@ def send_answer( debug=False,):
             - less arguments / options
     '''
 
-    
     js = '''
     Promise.resolve(
         IPython.notebook.save_notebook(true)
@@ -199,9 +200,10 @@ def send_answer( debug=False,):
     function theFinal() {
         
         var nb_name = IPython.notebook.notebook_name;
+        var cell_index = IPython.notebook.get_selected_index() - 1;
         
         var py_cmd = '';
-        py_cmd += 'nbx2.ImportClass.merge_give_answer("' + nb_name + '")';
+        py_cmd += 'nbx2.ImportClass.merge_give_answer("' + nb_name + '",' + cell_index + ')';
         
         IPython.notebook.kernel.execute(py_cmd);
         console.log(py_cmd);
