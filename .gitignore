@@ -9,3 +9,4 @@ misc/ipython_blocking
 stage/
 venvs/venv1
 venvs/venvtest1
+stage_utils/bare

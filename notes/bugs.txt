@@ -1,30 +1,75 @@
-6.3
+6.3 - 6.5
 
-[ ] the template notebook in stage_utils/bare has a bad path
+[x] the template notebook in stage_utils/bare has a bad path
     change the 
     sys.path.append('../../') 
     ->
     sys.path.append('../../../') 
 
-[ ] accidently ran these in nbx root:
+[x] accidently ran these in nbx root:
     need to unset them    
     git config branch.autosetuprebase always
     git config branch.autosetupmerge true
-    [ ] how to unset variables
-        [ ] does unset locally override the set globally?
-        [ ] unset mistaken set from nbx root git
+    [x] how to unset variables
+        [x] does unset locally override the set globally?
+        [x] unset mistaken set from nbx root git
+
+[ ] was there a virtualenv for this?
+
+[x] stage1 -init.clone
+    git inits, git configs, git push/clone
+    [~] test that user-setup works and answer moves
+        -> doesnt work
+    [x] test that pull.rebase is configured properly
+    [x] git clone for student, git push for teacher
+
+    [x] cloning problem bug:
+        -> solved via going to the remote and:
+            -checking out master, then
+            -checking out dummy again (Still as a new branch)
+
+        Cloning into 'student'...
+        done.
+        warning: remote HEAD refers to nonexistent ref, unable to checkout.
+
+[ ] stage2:
+    [ ] adding nbx directly to repo
+    
+
+[ ] stage3:
+    [ ] configure different user
+    [ ] notebooks in subdirectories
+    [ ] already existing .nbx folder
 
 [ ] add a [integration] test / staging script that's more realistic:
     - the student runs git clone directly into repo
     - the students config (locally) to have adverse settings
     - add variable git configs to staging repos, e.g. diff user.name b/w teacher and student
+    
+    [ ] what's the minium amount of selenium we need for this?
+    
+[ ] bug: student repo is ahead of the teacher repo
 
-    [ ] adding nbx directly to repo
+    occurs when teacher has no prior commits, while student has one: tracking the primary notebook at its initial state.
+    
+    error message:
+    "fatal: refusing to merge unrelated histories"
+
+    [ ] is there a way to switch branch to have no history and enable merge?
+        [ ] what would this do to the notebook being edited?
+        [ ] what would this do to other tracked/nontracked content within the repo?
+        [ ] could we seemly witch back the active working branch?
+
+[x] need a way to include the tests in repo itself
+    [x] remove the git repository
 
 [ ] utility to add nbx to a repo
     [ ] need to clear out __pycache__
 
 [ ] get some editable installs with pip and prep package preparation
+
+[ ] looking into notebook trust issue
+    [ ] is this about OS-user level, or git user?
 
 [ ] the overwrite modal problem came up
 
@@ -38,6 +83,10 @@
         - or notebook directory cwd (?)
     - long term fix is to move back in the file path untill you find a git repo...
         - need to understand how notebooks in this form work for both shelling to git and reading/writing .nbx/master.json
+
+[ ] the coolest thing to add is getting student solutions to be available
+
+[ ] can we get this to work on colaboratory?
 
 [x] git pull issue:
 
