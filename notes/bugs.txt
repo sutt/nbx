@@ -1,3 +1,202 @@
+6.3
+
+[ ] the template notebook in stage_utils/bare has a bad path
+    change the 
+    sys.path.append('../../') 
+    ->
+    sys.path.append('../../../') 
+
+[ ] accidently ran these in nbx root:
+    need to unset them    
+    git config branch.autosetuprebase always
+    git config branch.autosetupmerge true
+    [ ] how to unset variables
+        [ ] does unset locally override the set globally?
+        [ ] unset mistaken set from nbx root git
+
+[ ] add a [integration] test / staging script that's more realistic:
+    - the student runs git clone directly into repo
+    - the students config (locally) to have adverse settings
+    - add variable git configs to staging repos, e.g. diff user.name b/w teacher and student
+
+    [ ] adding nbx directly to repo
+
+[ ] utility to add nbx to a repo
+    [ ] need to clear out __pycache__
+
+[ ] get some editable installs with pip and prep package preparation
+
+[ ] the overwrite modal problem came up
+
+    [ ] reproduce the error by:
+        - simulate networking latency
+        - say through a settimeout
+
+[ ] probably the most high priority bug is starting 
+    - short term fix: trigger warning when not finding a .git directory is available files at: 
+        - python server cwd (?)
+        - or notebook directory cwd (?)
+    - long term fix is to move back in the file path untill you find a git repo...
+        - need to understand how notebooks in this form work for both shelling to git and reading/writing .nbx/master.json
+
+[x] git pull issue:
+
+    solution description:
+
+        the student's "git pull" functionality doesn't work under the following conditions:
+            1.) the [global] git config has pull.rebase = true
+            2.) the notebook is tracked in the git repo
+                2b.) a nb save method has been called, leading to a modification of the tracked notebook.
+            this leads the the followin error:
+
+                error: cannot pull with rebase: You have unstaged changes.
+                error: please commit or stash them.
+
+        simply chaning the command to override the user's configured git-pull behavior (pull-rebase -> pull-merge) via:
+            
+            git pull {remote_name} master --rebase=false
+
+        this has the benefit of not modifying the system,global, or even local git config.
+
+
+    description:    
+        when
+        >git config --get pull.rebase 
+        is "true", the git pull aspect will not work automatically
+
+    other useful commands:
+    >git config --global pull.rebase true
+    >git config pull.rebase true
+    >git config --list
+    >git config --list --show-origin
+    >git config --global --get pull.rebase
+    >git config --local  --get pull.rebase
+
+    notes:
+    - the global git config lives in: ~/.gitconfig
+    - the local git config lives in [repo]/.git/config
+
+    [x] build a test to reproduce the issue
+        
+        [x] how to use the staging utils to setup a stage / test
+            -> here's how:
+                >copy stage_utils/bare into a new dir in stage/
+                >cd into that new dir
+                >run # "C:\Program Files\Git\usr\bin\bash.exe" mkstage.sh
+                    this setups the git relationship
+                >conda activate
+                    otherwise python2.7 will run
+                >run user-setup.bat
+                    this will open up separate jupyter notebooks
+                    -> 9000:teacher
+                    -> 9001:student
+
+        [x] show it working well the first time
+
+        [~] now show it breaking with the same workflow
+            [x] student repo gets config setting changed
+
+            -> hmmm it still works??
+
+        [x] show it working again, verify pull.rebase is still true
+
+        [x] demo how to make sure pull.rebase triggers?
+            
+            git config branch.autosetuprebase always
+            git config branch.autosetupmerge true
+            
+            git config --get branch.autosetuprebase
+            git config --get branch.autosetupmerge
+                -> for me these are both unset
+
+            [x] try with all 3 set on first answer_receive()
+                -> still works
+
+                git config pull.rebase true
+                git config branch.autosetuprebase always
+                git config branch.autosetupmerge true
+
+            [x] it's probably the code --wait commands
+                -> nope
+                if not: code is the same as vim in this capacity, no?
+
+                git config core.editor "code --wait"
+                set EDITOR="code --wait"
+                set VISUAL="code --wait"
+
+                [x] try with just the 1st command, and previous 3
+                    git config --global core.editor "code --wait"
+                
+                [x] how to set variables on windows? or will git execute in bash?
+                    ->set VAR='cmd 1 2'
+            
+            [~] research the git config musings:
+                [x] do you have to unset before setting?
+                    -> no
+                [x] how can i see a pull.rebase happen?
+                  
+
+        [x] is the answer b/c the notebook is added?
+            -> YES!!
+            -> the answer is:
+            >git pull origin master --rebase=false
+
+        final solution: -------------------------------------
+
+        [x] repro the step:
+             [x] carefully add nec steps with stage creation
+                - stage the notebook
+                - make sure unstaged changes occur on student repo via "save" action in notebook
+             [x] also accumulate adverse git configs
+                -> just git config pull.rebase true
+             [x] demonstrate in notebook breaking
+             [x] test with first time send_answer()
+             [x] test manual correction
+             [x] test with second time send_anser()
+
+             - note: this is also makes
+
+        [~] does this only happen on git pull.rebase=true repos?
+            [~] can you merge incoming changes to a modified, unstaged-changes file locally?
+            -> seems like yes, as it always worked before
+             
+        [x] apply the update solution
+            [x] verify it works on a repo of the previous notebook
+
+        disreard rest of the items -------------------------
+
+        [~] build up a set of ways to:
+            - diagnose the issue
+            - fix the issue
+            - reproduce the issue
+            - check if there is user error:
+                - notlaunching notebook server at root of git repo
+
+        [~] try getting the error with the Mac
+            [~] find the example repo
+            [~] reset the example repo
+            [~] test it
+            [~] if no luck, try running the script for installfest
+
+        [x] any anomalies in how I ran it?
+            [x] goto recording
+
+        [~] what else could cause the issue?
+            - not having the nbx folder within the repo itself
+            - git hooks for CRLF only in Windows <-> Mac?
+            - am i not setting things correctly with duplicate entries in git config --list?
+                - e.g. have to unset first
+            - something else in here: https://git.generalassemb.ly/SEIR-32221/installfest/blob/44596845e2d8742ef704d8ee253c9af6b0e65aa3/scripts/git.sh#L40
+                git config --global core.editor "code --wait"
+                export EDITOR='code --wait'
+                export VISUAL='code --wait'
+            - maybe something to do with repo owner permissions?
+
+
+    [x] how to set the setting (pull.rebase)
+        -> git config --global pull.rebase true
+
+
 4.12
 
 [x] build staging utility to setup  [TODO-1]

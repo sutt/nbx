@@ -105,7 +105,7 @@ def pull_answer(remote_name='origin', b_log=False):
     '''
 
     cmd = f'''
-    git pull {remote_name} master
+    git pull {remote_name} master --rebase=false
     '''
     
     list_list_cmd = cmd_adj(cmd)
