@@ -32,20 +32,22 @@
         done.
         warning: remote HEAD refers to nonexistent ref, unable to checkout.
 
-[ ] stage2:
-    [ ] adding nbx directly to repo
-    
+[x] stage2:
+    [x] adding nbx directly to repo
+        [x] cp the lib
+        [x] change imports
+            [x] prove it's a local import
+        [~] cp without __pycache__
+    [x] edit the base nb
+
+    [x] test with conda activate
 
 [ ] stage3:
     [ ] configure different user
     [ ] notebooks in subdirectories
-    [ ] already existing .nbx folder
+    [ ] already existing .nbx/master.json
 
 [ ] add a [integration] test / staging script that's more realistic:
-    - the student runs git clone directly into repo
-    - the students config (locally) to have adverse settings
-    - add variable git configs to staging repos, e.g. diff user.name b/w teacher and student
-    
     [ ] what's the minium amount of selenium we need for this?
     
 [ ] bug: student repo is ahead of the teacher repo
@@ -54,6 +56,12 @@
     
     error message:
     "fatal: refusing to merge unrelated histories"
+
+    [ ] quick fix: read the most recent commit on entry, then track the commit message of all subseqeunt ones. 
+
+        This will provide a warning to user that history divergence will cause a fatal error to all functionality and some [manual] fixes.
+
+            e.g. git pull origin master --rebase=true
 
     [ ] is there a way to switch branch to have no history and enable merge?
         [ ] what would this do to the notebook being edited?
