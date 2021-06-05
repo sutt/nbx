@@ -1,0 +1,21 @@
+[submodule "misc/example-repo"]
+	path 	= misc/example-repo
+	ignore 	= dirty
+[submodule "stage_utils/bare/student"]
+	path 	= stage_utils/bare/student
+	ignore 	= dirty
+[submodule "stage_utils.bare.teacher"]
+	path 	= stage_utils/bare/teacher
+	ignore = dirty
+[submodule "stage_utils.bare.teacher"]
+	path 	= stage_utils/bare/teacher
+	ignore = dirty
+[submodule "tests/test_templates/test_1/student"]
+	path 	= tests/test_templates/test_1/student
+	ignore = dirty
+[submodule "tests/test_templates/test_1/teacher"]
+	path 	= tests/test_templates/test_1/teacher
+	ignore = dirty
+
+
+

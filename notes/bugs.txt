@@ -14,7 +14,9 @@
         [x] does unset locally override the set globally?
         [x] unset mistaken set from nbx root git
 
-[ ] was there a virtualenv for this?
+[x] was there a virtualenv for this?
+    -> in venvs/ 
+        > venv1\Scripts\activate
 
 [x] stage1 -init.clone
     git inits, git configs, git push/clone
@@ -32,7 +34,7 @@
         done.
         warning: remote HEAD refers to nonexistent ref, unable to checkout.
 
-[x] stage2:
+[x] stage2: - `copy.lib`
     [x] adding nbx directly to repo
         [x] cp the lib
         [x] change imports
@@ -42,10 +44,50 @@
 
     [x] test with conda activate
 
-[ ] stage3:
-    [ ] configure different user
-    [ ] notebooks in subdirectories
+[x] remove the untracked content git highliughts
+
+    git config -f .gitmodules submodule.misc/example-repo.ignore untracked
+    
+    [submodule "stage_utils.bare.teacher"]
+    	path 	= stage_utils/bare/teacher
+	    ignore = dirty
+
+[x] stage3: - `multi.book`
+    [x] notebooks in subdirectories
+    [x] configure different user
+        [x] how does the author field in the git message get set?
+
+        [x] what variables to adjust
+            git config user.name Teacher 1
+            git config user.email teacher@opensource.net
+        [~] do these / what settings allow push/pull access]
+            -> maybe, it's a little weird
+
+[ ] stage4:
     [ ] already existing .nbx/master.json
+
+[ ] bug: student [accidently] runs sends_answer()
+
+    this will cause remote to have conflicting histories next time the teacher pushes
+    - this won't happen without write access
+
+        remote: error: refusing to update checked out branch: refs/heads/master
+        remote: error: By default, updating the current branch in a non-bare repository
+        remote: is denied, because it will make the index and work tree inconsistent
+        remote: with what you pushed, and will require 'git reset --hard' to match
+        remote: the work tree to HEAD.
+        remote:
+        remote: You can set the 'receive.denyCurrentBranch' configuration variable
+        remote: to 'ignore' or 'warn' in the remote repository to allow pushing into
+        remote: its current branch; however, this is not recommended unless you
+        remote: arranged to update its work tree to match what you pushed in some
+        remote: other way.
+        remote:
+        remote: To squelch this message and still keep the default behaviour, set
+        remote: 'receive.denyCurrentBranch' configuration variable to 'refuse'.
+
+[ ] refactor nbx2 as nbx
+    [ ] need to adjust all the staging scripts
 
 [ ] add a [integration] test / staging script that's more realistic:
     [ ] what's the minium amount of selenium we need for this?
