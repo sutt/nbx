@@ -14,18 +14,24 @@
     
     [x] test applying selenium to test_setup.bat outcome
 
-    [ ] demonstrate jupyter based full send/receive answer
+    [x] demonstrate jupyter based full send/receive answer
         [x] how to edit the input cell content?
             action = ActionChains(driver)
             action.send_keys("ssss")
+            # action.perform()
+            action.key_up(Keys.SHIFT)
             action.perform()
+
         [x] new stage
         [x] launch notebooks from home screen
         [x] close second tab -> driver.quit()
         [x] two drivers
-        [ ] new stage and test:
-            [ ] send
-            [ ] receive
+        [x] new stage and test:
+            [x] send
+            [x] receive
+
+            -> stage/selenium.8/
+            -> misc/selenium-demo/jupyter-3.ipynb
 
     [x] bug on selenium driven test:
         cell index is off by one:
@@ -40,22 +46,43 @@
                     action.send_keys(Keys.ENTER)
                     action.perform()
 
-    [ ] devise test of nbx functionality for automated testing
-        [ ] get original values
-        [ ] get new values
+    [x] devise test of nbx functionality for automated testing
+        [x] get original values
+        [x] get new values
 
-    [ ] create script based approach
-        [ ] understand test/ dir structrue
-        [ ] call mkstage + test-setup.bat from subprocess
-        [ ] open drivers + navigate
-        [ ] time.sleep methods
-        [ ] what happens on window.reload() events?
-            [ ]  do i need to get all elements again?
-        [ ] run commands in each driver
+    [x] create script based approach
+        [x] understand test/ dir structrue
+        [x] call mkstage + test-setup.bat from subprocess
+        [x] open drivers + navigate
+        [x] time.sleep methods
+        [~] what happens on window.reload() events?
+            [x]  do i need to get all elements again?
+            -> i do this anyways because
+        [x] run commands in each driver
+        [x] do i need to run with admin console? -> no
+        [x] replace test-setup.bat with Popen
+            
+                https://docs.python.org/3.7/library/subprocess.html#replacing-os-popen-os-popen2-os-popen3
+                
+                subprocess.CREATE_NEW_PROCESS_GROUP
+                A Popen creationflags parameter to specify that a new process group will be created. This flag is necessary for using os.kill() on the subprocess.
+
         [ ] tear down procs
-            [ ] close driver
-            [ ] kill nb servers
+            [x] close driver
+            [x] kill nb servers
             [ ] delete stage
+                
+                When running proc.terminate() i get on rmdir():
+                    PermissionError: [WinError 5] Access is denied: 'test_stages\\basic_1\\remote\\main\\.git\\objects\\70\\38d0683bf2c616141eff86dfb53d2694f3bbbb'
+
+                    i end up with multiple open process (12) under the terminal in Task MAnager
+                
+                when running os.kill() i end up breaking the test running
+
+                    but i end up with no jupyter / python processes running in TaskManager
+
+            [ ] why does test no longer work?
+
         [ ] pytest compatible
             [ ] making selenium windows run in background / invisible?
                 - another desktop?
@@ -81,7 +108,12 @@
 
         [ ] how to check the input of other cells
 
+[ ] bug: receive_answer() still uses cell content parsing for selected index
 
+    change this to js selected_cell
+
+        nbx/merge.get_answer()
+            has `term=receive_answer` not a cell position
 
 6.3 - 6.5
 
