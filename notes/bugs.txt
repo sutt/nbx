@@ -1,3 +1,88 @@
+6.5 - 6.6
+
+[ ] add a [integration] test - selenium based driver
+    what's the minium amount of selenium we need for this?
+    ->https://selenium-python.readthedocs.io/getting-started.html
+
+    [x] setup
+        [x] activate virtualenv
+        [x] new repo -> misc/selenium-demo
+    
+    [x] test simple selenium?
+        [x] driver
+        [x] in jupyter
+    
+    [x] test applying selenium to test_setup.bat outcome
+
+    [ ] demonstrate jupyter based full send/receive answer
+        [x] how to edit the input cell content?
+            action = ActionChains(driver)
+            action.send_keys("ssss")
+            action.perform()
+        [x] new stage
+        [x] launch notebooks from home screen
+        [x] close second tab -> driver.quit()
+        [x] two drivers
+        [ ] new stage and test:
+            [ ] send
+            [ ] receive
+
+    [x] bug on selenium driven test:
+        cell index is off by one:
+            selected_cell
+            -> this occurs because we're clicking run this cell
+               and that doesn't bring focus to the cell below
+
+            [x] what about shift+enter
+                https://selenium-python.readthedocs.io/api.html#module-selenium.webdriver.common.action_chains
+                -> works:
+                    action.key_down(Keys.SHIFT)  #.perform()
+                    action.send_keys(Keys.ENTER)
+                    action.perform()
+
+    [ ] devise test of nbx functionality for automated testing
+        [ ] get original values
+        [ ] get new values
+
+    [ ] create script based approach
+        [ ] understand test/ dir structrue
+        [ ] call mkstage + test-setup.bat from subprocess
+        [ ] open drivers + navigate
+        [ ] time.sleep methods
+        [ ] what happens on window.reload() events?
+            [ ]  do i need to get all elements again?
+        [ ] run commands in each driver
+        [ ] tear down procs
+            [ ] close driver
+            [ ] kill nb servers
+            [ ] delete stage
+        [ ] pytest compatible
+            [ ] making selenium windows run in background / invisible?
+                - another desktop?
+
+    [ ] develop more complex testing template
+        [ ] class + function to orchestrate jupyter actions
+            [ ] verify expected input/ output
+            [ ] poll and wait for element to update
+        [ ] develop a separate file with the orchestration commands
+        
+
+[ ] add scripts for the batch files to be unix compatible
+
+[ ] bug: nbx doesn't work when manually pressing arrow next to cell 
+
+    "run this cell" button
+
+    this occurs because IPython.notebook.get_selected_index() is off
+
+    [ ] a mini hack is to:
+        - check if the cell below has send_answer()
+        - if so, then don't subtrack one
+
+        [ ] how to check the input of other cells
+
+
+
 6.3 - 6.5
 
 [x] the template notebook in stage_utils/bare has a bad path
@@ -86,11 +171,17 @@
         remote: To squelch this message and still keep the default behaviour, set
         remote: 'receive.denyCurrentBranch' configuration variable to 'refuse'.
 
+[ ] potential bug: student (or teacher) notebook is not trusted:
+    
+    what does that effect?
+        - probably plugins like Youtube
+        - does it effect
+        
+        [ ] research notebook trust
+
 [ ] refactor nbx2 as nbx
     [ ] need to adjust all the staging scripts
 
-[ ] add a [integration] test / staging script that's more realistic:
-    [ ] what's the minium amount of selenium we need for this?
     
 [ ] bug: student repo is ahead of the teacher repo
 
