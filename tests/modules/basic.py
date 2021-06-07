@@ -96,7 +96,7 @@ def basic_1():
         
         time.sleep(0.3)
 
-    time.sleep(1)
+    time.sleep(3)
 
     ### Student::receive_answer()
 

@@ -67,10 +67,10 @@
                 subprocess.CREATE_NEW_PROCESS_GROUP
                 A Popen creationflags parameter to specify that a new process group will be created. This flag is necessary for using os.kill() on the subprocess.
 
-        [ ] tear down procs
+        [x] tear down procs
             [x] close driver
             [x] kill nb servers
-            [ ] delete stage
+            [x] delete stage
                 
                 When running proc.terminate() i get on rmdir():
                     PermissionError: [WinError 5] Access is denied: 'test_stages\\basic_1\\remote\\main\\.git\\objects\\70\\38d0683bf2c616141eff86dfb53d2694f3bbbb'
@@ -81,7 +81,22 @@
 
                     but i end up with no jupyter / python processes running in TaskManager
 
-            [ ] why does test no longer work?
+            [x] why does test no longer work?
+
+        [x] simple function to test proc-kill methods
+            - launch jupyter then close it, print after killing
+            - student server was not running on 9201 but 9200
+            - problem seems to comeup fro two servers
+            - what happens when you only kill one and try to rerun? is that port still open?
+                -> no, 1 kill on shuts both down and still exits application
+            
+            resources:
+                use psutil?
+                https://stackoverflow.com/questions/1230669/subprocess-deleting-child-processes-in-windows
+
+            -> two step solution:
+                1. use taskkill windows command and pass the pid's. This also deletes any subprocesses spawned by the nb server
+                2. use rm -rf instead of shutil.rmtree. This is because the local git remote will be busy when pushed to
 
         [ ] pytest compatible
             [ ] making selenium windows run in background / invisible?

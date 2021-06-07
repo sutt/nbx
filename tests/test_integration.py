@@ -75,13 +75,13 @@ def test_basic_1():
     proc_student_server = subprocess.Popen([
         'jupyter',
         'notebook',
-        '--port=9200', 
+        '--port=9201', 
         '--no-browser',
         "--NotebookApp.token=''",
         "--NotebookApp.password=''"
     ],shell=True,)
     
-    time.sleep(5)
+    time.sleep(10)
     print("done launching servers")
 
     
@@ -104,16 +104,21 @@ def test_basic_1():
     # assert lines[0] == TEST_DATA, f"""contents loaded from master.json does not match expected\n\nexpected:\n{TEST_DATA}\n\nactual:\n{lines[0]}"""
 
     # # Tear Down
-    os.kill(proc_teacher_server.pid, signal.CTRL_C_EVENT)
+
+    # os.kill(proc_teacher_server.pid, signal.CTRL_C_EVENT)
     # proc_teacher_server.terminate()
-    time.sleep(5)
-    os.kill(proc_student_server.pid, signal.CTRL_C_EVENT)
+    # os.kill(proc_student_server.pid, signal.CTRL_C_EVENT)
     # proc_student_server.terminate()
+    
+    subprocess.call(['taskkill', '/F', '/T', '/PID', str(proc_teacher_server.pid)])
+    subprocess.call(['taskkill', '/F', '/T', '/PID', str(proc_student_server.pid)])
+    
     time.sleep(5)
 
     os.chdir(starting_cwd)
     print("................deleting test stage...........")
-    shutil.rmtree(dst)
+    subprocess.call(['rm', '-rf', str(dst)])
+    print(".................done test: basic_1 ..........")
 
 if __name__ == "__main__":
     test_basic_1()
