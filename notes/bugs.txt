@@ -1,6 +1,6 @@
 6.5 - 6.6
 
-[ ] add a [integration] test - selenium based driver
+[x] add a [integration] test - selenium based driver
     what's the minium amount of selenium we need for this?
     ->https://selenium-python.readthedocs.io/getting-started.html
 
@@ -98,18 +98,57 @@
                 1. use taskkill windows command and pass the pid's. This also deletes any subprocesses spawned by the nb server
                 2. use rm -rf instead of shutil.rmtree. This is because the local git remote will be busy when pushed to
 
-        [ ] pytest compatible
-            [ ] making selenium windows run in background / invisible?
-                - another desktop?
+    [x] Make a legit test
+        [x] launch examples - jupyter3
+        [x] pickup input/output of cells
 
-    [ ] develop more complex testing template
-        [ ] class + function to orchestrate jupyter actions
-            [ ] verify expected input/ output
-            [ ] poll and wait for element to update
-        [ ] develop a separate file with the orchestration commands
+        [x] tie the input
+
+        [x] test on directory files, etc
+
+        [x] get the output bug fixed
+            
+            -> staleelementreferenceexception
+
+            [x] examine wiht idle format:
+                [x] open up jupyter in misc/ + a stage
+                [x] get a new notebook open
+                [x] webdriver on the student
+                -> need to reset cell, not just elems
+        
+        final bugs:
+        [x] why no .nbx found in student
+        [x] make sure tear-down occurs
+
+[ ] next level tests
+    [ ] add multiple actions
+        [ ] handle page reloads + new cells
+
+    [ ] pytest compatible
+        [ ] making selenium windows run in background / invisible?
+            - another desktop?
+
+[ ] develop more complex testing template
+    [ ] class + function to orchestrate jupyter actions
+        [ ] verify expected input/ output
+        [ ] poll and wait for element to update
+    [ ] develop a separate file with the orchestration commands
         
 
 [ ] add scripts for the batch files to be unix compatible
+
+[ ] bug: --no-tear-down...can't preserve the webdrivers
+
+    - this is because basic_1() returns, destroying the resource
+    - this can be fixed with class/instance/method instead of a function
+
+[ ] bug: selected cell on return doens't match sent cell on return
+
+     - this occurs because non code cells (e.g. markdown) 
+       aren't incrememnt in current_cell_selected js-side?
+
+     - a fix that get's current_running_index and can align with non codeCells
+     will fix this and several other bugs
 
 [ ] bug: nbx doesn't work when manually pressing arrow next to cell 
 

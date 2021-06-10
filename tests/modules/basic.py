@@ -3,9 +3,13 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import ActionChains
 import time
 
-def basic_1():
+from .common import *
 
-    print("starting basic_1...")
+def basic_1(ERR_MSGS=[], TEST_FAILS=False, b_no_tear_down=False):
+
+    d_outputs = {}
+    
+    print(f"starting basic_1...teardown: {b_no_tear_down}")
     
     ### Launch Notebook
 
@@ -42,7 +46,7 @@ def basic_1():
 
     time.sleep(1)
 
-    ### Open Both Notebook
+    ### Open Both Notebooks
 
     teacher_driver = webdriver.Chrome()
     student_driver = webdriver.Chrome()
@@ -72,6 +76,8 @@ def basic_1():
         
         if cell_num == 3:
             
+            outputs_0 = get_cell_outputs(cell)
+
             action = ActionChains(driver)
             action.send_keys("import random;random.randint(0,1e6)")
             action.perform()
@@ -96,6 +102,14 @@ def basic_1():
         
         time.sleep(0.3)
 
+        if cell_num == 3:
+
+            outputs_1 = get_cell_outputs(cell)
+                                    
+            if outputs_0 == outputs_1:
+                ERR_MSGS.append("BAD JUPYTER ACTION: teacher nb test cell not executed")
+                TEST_FAILS = True
+
     time.sleep(3)
 
     ### Student::receive_answer()
@@ -115,14 +129,14 @@ def basic_1():
         
         time.sleep(0.1)
         
-        if cell_num == 3:
+        if i_action == 3:
             
             action = ActionChains(driver)
             action.send_keys("nbx2.receive_answer()")
             action.perform()
             
             time.sleep(0.3)
-
+                    
 
         action = ActionChains(driver)
         action.key_down(Keys.SHIFT)
@@ -133,10 +147,39 @@ def basic_1():
         
         time.sleep(0.3)
 
+        if i_action == 3:
+            
+            # allow student nb reload enough to finish before checking answer cell
+            time.sleep(10)
+
+            attempts = 0
+            success = False
+            while(attempts < 3):
+                try:
+                    class_name = "code_cell"
+                    elems = driver.find_elements_by_class_name(class_name)
+                    cell = elems[cell_num]
+                    outputs_3 = get_cell_outputs(cell)
+
+                    if outputs_3 != outputs_1:
+                        ERR_MSGS.append(f"RECEIVED OUTPUT DOES NOT MATCH SENT: sent:\n{outputs_1}\nreceived:\n{outputs_3}")
+                        TEST_FAILS = True
+
+                    success = True
+                    break
+
+                except:
+                    attempts += 1
+                    time.sleep(1)
+            
+            if not(success): print("FAILED to load cells on refreshed notebook")
+
     ### Tear Down
 
     time.sleep(10)
 
-    teacher_driver.quit()
-    student_driver.quit()
+    if not(b_no_tear_down):
+        teacher_driver.quit()
+        student_driver.quit()
 
+    return ERR_MSGS, TEST_FAILS, d_outputs
