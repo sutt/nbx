@@ -103,12 +103,12 @@ def receive_answer( debug=False,):
             }}
         
         var py_cmd = '';
-        py_cmd += 'nbx2.ImportClass.gitcomm_pull_answer()';
+        py_cmd += 'nbx.ImportClass.gitcomm_pull_answer()';
         IPython.notebook.kernel.execute(py_cmd);
         console.log(py_cmd);
 
         var py_cmd = '';
-        py_cmd += 'nbx2.ImportClass.merge_get_answer("' + nb_name + '")';
+        py_cmd += 'nbx.ImportClass.merge_get_answer("' + nb_name + '")';
         IPython.notebook.kernel.execute(py_cmd, simple_cb);
         console.log(py_cmd);
 
@@ -172,7 +172,7 @@ def receive_answer( debug=False,):
     
     if debug:
         try:
-            with open('js-debug-nbx2.js', 'w') as f:
+            with open('js-debug-nbx.js', 'w') as f:
                 f.write(js)
         except:
             print('debug option set True, but failed to output js to `js-debug.js. directory might not exist?')
@@ -203,13 +203,13 @@ def send_answer( debug=False,):
         var cell_index = IPython.notebook.get_selected_index() - 1;
         
         var py_cmd = '';
-        py_cmd += 'nbx2.ImportClass.merge_give_answer("' + nb_name + '",' + cell_index + ')';
+        py_cmd += 'nbx.ImportClass.merge_give_answer("' + nb_name + '",' + cell_index + ')';
         
         IPython.notebook.kernel.execute(py_cmd);
         console.log(py_cmd);
 
         var py_cmd = '';
-        py_cmd += 'nbx2.ImportClass.gitcomm_push_answer()';
+        py_cmd += 'nbx.ImportClass.gitcomm_push_answer()';
 
         IPython.notebook.kernel.execute(py_cmd);
         console.log(py_cmd);
@@ -221,7 +221,7 @@ def send_answer( debug=False,):
     
     if debug:
         try:
-            with open('js-debug-nbx2.js', 'w') as f:
+            with open('js-debug-nbx.js', 'w') as f:
                 f.write(js)
         except:
             print('debug option set True, but failed to output js to `js-debug.js. directory might not exist?')

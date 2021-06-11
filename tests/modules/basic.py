@@ -87,7 +87,7 @@ def basic_1(ERR_MSGS=[], TEST_FAILS=False, b_no_tear_down=False):
         if cell_num == 4:
             
             action = ActionChains(driver)
-            action.send_keys("nbx2.send_answer()")
+            action.send_keys("nbx.send_answer()")
             action.perform()
             
             time.sleep(0.3)
@@ -132,7 +132,7 @@ def basic_1(ERR_MSGS=[], TEST_FAILS=False, b_no_tear_down=False):
         if i_action == 3:
             
             action = ActionChains(driver)
-            action.send_keys("nbx2.receive_answer()")
+            action.send_keys("nbx.receive_answer()")
             action.perform()
             
             time.sleep(0.3)
