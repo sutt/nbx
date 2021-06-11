@@ -1,3 +1,22 @@
+6.9 - 6.12
+
+
+[x] refactor nbx2 as nbx
+    [x] need to adjust all the staging scripts
+    [x] change the name of files
+    [x] check if test runs
+    [x] check if stage runs
+
+[x] add .gitkeep files to certain directories
+    [x] test_stages/
+    [x] how to have stage/ folder without any contents?
+
+[ ] build a test to verify the pull.rebase works
+    - this requires us to save the notebook with modifications on students end before receiving answer
+
+[ ] a test series with a completely blank notebook
+
+
 6.5 - 6.6
 
 [x] add a [integration] test - selenium based driver
@@ -264,9 +283,6 @@
         - does it effect
         
         [ ] research notebook trust
-
-[ ] refactor nbx2 as nbx
-    [ ] need to adjust all the staging scripts
 
     
 [ ] bug: student repo is ahead of the teacher repo
